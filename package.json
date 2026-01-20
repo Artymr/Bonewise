@@ -1,0 +1,21 @@
+{
+  "name": "tfg-osteo",
+  "version": "1.0.0",
+  "description": "Ayuda para la decisión médiaica en el tratamiento de la osteoporosis mediante técnicas de Machine Learning.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artymr/TFG-osteo.git"
+  },
+  "keywords": [],
+  "author": "Arturo Muñoz Rodríguez",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Artymr/TFG-osteo/issues"
+  },
+  "homepage": "https://github.com/Artymr/TFG-osteo#readme"
+}
