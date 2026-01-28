@@ -107,257 +107,8 @@
       </div>
     </div>
 
-    <form id="osteoform" class="mb-5" method ="post" action="/diagnostico">
+<%- include('osteoform') %>
 
-      <!-- 1. Datos generales -->
-      <div class="card section-card">
-        <div class="card-header bg-light">
-          <strong>1. Datos generales</strong>
-        </div>
-        <div class="col-md-4 position-relative">
-  <label class="form-label required">Nombre completo</label>
-  <input 
-    type="text" 
-    class="form-control" 
-    id="nombre" 
-    name="nombre" 
-    required
-  >
-  <div class="invalid-feedback">
-    El nombre debe contener solo letras y al menos nombre y un apellido.
-  </div>
-</div>
-        <div class="card-body row g-3">
-          <div class="col-md-2">
-            <label class="form-label required">Edad</label>
-            <input type="number" min="0" class="form-control" id="edad" name="edad" required>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label required">Sexo</label>
-            <select class="form-select" id="sexo" name="sexo" required>
-              <option value="">--</option>
-              <option>Femenino</option>
-              <option>Masculino</option>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label required">Peso (kg)</label>
-            <input type="number" step="0.1" min="0" class="form-control" id="peso" required>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label required">Talla (cm)</label>
-            <input type="number" step="0.1" min="0" class="form-control" id="talla" required>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">IMC</label>
-            <input type="text" class="form-control" id="imc" readonly>
-          </div>
-          <div class="col-md-2">
-  <label class="form-label">Raza / Etnia</label>
-  <select class="form-select" id="etnia" name="etnia">
-    <option value="Blanco / Caucásico" selected>Blanco / Caucásico</option>
-    <option value="Hispano / Latino">Hispano / Latino</option>
-    <option value="Negro / Afroamericano">Negro / Afroamericano</option>
-    <option value="Asiático">Asiático</option>
-    <option value="Indígena / Nativo">Indígena / Nativo</option>
-    <option value="Otros">Otros</option>
-  </select>
-</div>
-
-        </div>
-      </div>
-
-      <!-- 2. Antecedentes personales -->
-      <div class="card section-card">
-        <div class="card-header bg-light">
-          <strong>2. Antecedentes personales</strong>
-        </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <label class="form-label">Fracturas previas por fragilidad</label>
-            <div id="fracturasList" class="mb-2"></div>
-            <div class="row g-2">
-              <div class="col-md-4"><input id="fractura_loc" type="text" class="form-control" placeholder="Localización"></div>
-              <div class="col-md-3"><input id="fractura_edad" type="number" class="form-control" placeholder="Edad en la fractura"></div>
-              <div class="col-md-3"><input id="fractura_num" type="number" class="form-control" placeholder="Número (opcional)"></div>
-              <div class="col-md-2"><button type="button" class="btn btn-outline-secondary w-100" id="addFract">Añadir</button></div>
-            </div>
-          </div>
-
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Menopausia (edad inicio)</label>
-              <input type="number" class="form-control" id="menopausia">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Historia de caídas (último año)</label>
-              <input type="text" class="form-control" id="caidas" placeholder="nº de caídas / frecuencia">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Enfermedades asociadas</label>
-              <input type="text" class="form-control" id="enf_asoc" placeholder="ej: hipertiroidismo, ERC...">
-            </div>
-          </div>
-
-          <div class="mt-3">
-            <label class="form-label">Cirugías / Trasplantes relevantes</label>
-            <textarea class="form-control" id="cirugias" rows="2"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. Antecedentes familiares -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>3. Antecedentes familiares</strong></div>
-        <div class="card-body row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Fractura de cadera en familiares</label>
-            <select class="form-select" id="fx_cadera_fam">
-              <option value="">--</option>
-              <option>No</option>
-              <option>Sí (madre)</option>
-              <option>Sí (padre)</option>
-              <option>Sí (hermanos)</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Historia familiar de osteoporosis</label>
-            <select class="form-select" id="fx_osteo_fam">
-              <option value="">--</option>
-              <option>No</option>
-              <option>Sí</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. Estilo de vida -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>4. Estilo de vida y factores modificables</strong></div>
-        <div class="card-body row g-3">
-          <div class="col-md-3">
-            <label class="form-label">Tabaquismo</label>
-            <select class="form-select" id="tabaquismo">
-              <option value="">--</option>
-              <option>No fumador</option>
-              <option>Exfumador</option>
-              <option>Fumador actual</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Alcohol (u/día)</label>
-            <input type="number" step="0.1" class="form-control" id="alcohol" placeholder="unidades/día">
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Actividad física</label>
-            <select class="form-select" id="actividad">
-              <option value="">--</option>
-              <option>Sedentario</option>
-              <option>Actividad ligera</option>
-              <option>Ejercicio regular</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Dieta / Calcio</label>
-            <input type="text" class="form-control" id="dieta" placeholder="Aporte de calcio / déficit nutricional">
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. Tratamientos previos y actuales -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>5. Tratamientos previos y actuales</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Corticoides sistémicos ≥3 meses</label>
-              <select class="form-select" id="corticoides">
-                <option value="">--</option>
-                <option>No</option>
-                <option>Sí</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Fármacos asociados (inhibidores aromatasa, heparina, anticonv.)</label>
-              <input type="text" class="form-control" id="farmacos">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Tratamiento antiosteoporótico actual</label>
-              <input type="text" class="form-control" id="trat_actual" placeholder="ej: alendronato, denosumab...">
-            </div>
-          </div>
-          <div class="mt-3">
-            <label class="form-label">Adherencia / Comentarios</label>
-            <textarea class="form-control" id="adherencia" rows="2"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- 6. Exploraciones y pruebas -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>6. Exploraciones y pruebas</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">DXA - T-score columna lumbar</label>
-              <input type="number" step="0.1" class="form-control" id="t_lumbar">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">DXA - T-score cuello femoral</label>
-              <input type="number" step="0.1" class="form-control" id="t_cuello">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Z-score</label>
-              <input type="number" step="0.1" class="form-control" id="zscore">
-            </div>
-          </div>
-
-          <hr>
-
-          <div class="mt-3">
-            <label class="form-label">Analítica (Vit D, Ca, P, PTH, TSH, función renal)</label>
-            <textarea class="form-control" id="analitica" rows="2"></textarea>
-          </div>
-
-          <div class="mt-3">
-            <label class="form-label">Radiología (si sospecha fractura vertebral oculta)</label>
-            <textarea class="form-control" id="radiologia" rows="2"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- 7. Estratificación de riesgo -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>7. Estratificación de riesgo</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Riesgo según FRAX (%)</label>
-              <input type="number" step="0.1" class="form-control" id="riesgo_frax">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Riesgo según DMO / T-score</label>
-              <input type="text" class="form-control" id="riesgo_dmo" placeholder="Bajo / Moderado / Alto / Muy alto">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Comentario / Plan</label>
-              <textarea class="form-control" id="plan" rows="2"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-between align-items-center mb-5">
-  <!-- Botón de limpiar (a la izquierda, rojo) -->
-  <button type="reset" class="btn btn-danger">Limpiar</button>
-
-  <!-- Botones de acción (a la derecha) -->
-  <div class="d-flex gap-2">
-    <button type="button" class="btn btn-success">Dar respuesta</button>
-    <button type="submit" class="btn btn-primary">Guardar</button>
-  </div>
-</div>
-    </form>
     <div id="buscarPacientes" class="container mt-4" style="display:none;">
   <h3>Pacientes</h3>
   <table class="table table-striped">
@@ -377,6 +128,23 @@
     </tbody>
   </table>
 </div>
+<!-- MODAL/FORM EDITAR PACIENTE (dentro de buscarPacientes) -->
+<div id="editarPacienteForm" class="mt-5" style="display: none;">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">
+        <i class="fas fa-edit me-2"></i>Editar Paciente
+      </h4>
+      <button id="btnVolverEditar" class="btn btn-outline-light btn-sm">
+        <i class="fas fa-arrow-left me-1"></i>Volver
+      </button>
+    </div>
+    <div class="card-body p-4">
+      <%- include('osteoform') %>
+    </div>
+  </div>
+</div>
+
 
  </main>
 
