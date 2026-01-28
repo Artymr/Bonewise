@@ -49,6 +49,19 @@ formContainer.style.display = 'none';
   const menuLinks = document.querySelectorAll('.navbar-nav .nav-link');
   const [inicioLink, nuevoLink, buscarLink] = menuLinks;
 
+  const btnInicioNuevo = document.getElementById('btnInicioNuevo');
+  const btnInicioBuscar = document.getElementById('btnInicioBuscar');
+
+  btnInicioNuevo.addEventListener('click', (e) => {
+    e.preventDefault();
+    nuevoLink.click();
+  });
+
+  btnInicioBuscar.addEventListener('click', (e) => {
+    e.preventDefault();
+    buscarLink.click();
+  });
+
   inicioLink.addEventListener('click', (e) => {
   e.preventDefault();
   formContainer.style.display = 'none';
@@ -115,6 +128,9 @@ document.getElementById('osteoform').addEventListener('submit', (e) => {
 
   // Si el nombre es válido → continuar con el guardado
   const data = Object.fromEntries(new FormData(e.target).entries());
+  const now = new Date().toLocaleDateString();
+  data.primerRegistro = now;
+  data.ultimaActualizacion = now;
   pacientes.push(data);
 
   e.target.reset();
@@ -138,9 +154,22 @@ function updateTable() {
       <td>${p.nombre || ''}</td>
       <td>${p.edad || ''}</td>
       <td>${p.sexo || ''}</td>
-      <td>${p.peso || ''}</td>
-      <td>${p.talla || ''}</td>
-      <td><button class="btn btn-sm btn-danger" onclick="deletePaciente(${index})">Eliminar</button></td>
+      <td>${p.primerRegistro || ''}</td>
+      <td>${p.ultimaActualizacion || ''}</td>
+      <td class = "d-flex gap-1">
+        <button class="btn btn-sm btn-danger" onclick="deletePaciente(${index})">
+          Eliminar
+        </button>
+        <button class="btn btn-sm btn-warning" onclick="editPaciente(${index})">
+          Editar
+        </button>
+        <button class="btn btn-sm btn-info" onclick="viewPaciente(${index})">
+          Ver
+        </button>
+        <button class="btn btn-sm btn-success" onclick="descargarPaciente(${index})">
+          Descargar
+        </button>
+      </td>
     `;
     tbody.appendChild(tr);
   });
@@ -150,4 +179,19 @@ function updateTable() {
 function deletePaciente(index) {
   pacientes.splice(index, 1);
   updateTable();
+}
+
+// Función para editar paciente
+function editPaciente(index) {
+  alert('Funcionalidad de edición no implementada aún.');
+}
+
+// Función para ver paciente
+function viewPaciente(index) {
+  alert('Funcionalidad de visualización no implementada aún.');
+}
+
+// Función para descargar paciente
+function descargarPaciente(index) {
+  alert('Funcionalidad de descarga no implementada aún.');
 }
