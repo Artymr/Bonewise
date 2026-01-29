@@ -15,10 +15,8 @@
 
     <!-- Logo centrado arriba -->
     <img src="/images/logo.png" alt="Logo Unidad Fragilidad Ósea" style="height:140px;" class="mb-3">
-
     <!-- Línea divisoria entre logo y botones -->
     <hr class="w-100 text-white opacity-50 my-2">
-
     <!-- Contenedor inferior con botones -->
     <div class="d-flex justify-content-center align-items-center w-100 mt-2 position-relative">
 
@@ -106,8 +104,9 @@
         </div>
       </div>
     </div>
-
+<div id="osteoform" style="display:none;">
 <%- include('osteoform') %>
+</div>
 
     <div id="buscarPacientes" class="container mt-4" style="display:none;">
   <h3>Pacientes</h3>
@@ -154,6 +153,12 @@
   <!-- Bootstrap JS + small script -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   
-<script src="/javascripts/osteo.js" defer></script>
+<script src="/javascripts/data.js"></script>
+<script src="/javascripts/form.js"></script>
+<script src="/javascripts/navegacion.js"></script>
+<script src="/javascripts/pacientes.js"></script>
+<script src="/javascripts/editar.js"></script>
+<script src="/javascripts/dashboard.js"></script>
+<script src="/javascripts/main.js"></script>
 </body>
 </html>
