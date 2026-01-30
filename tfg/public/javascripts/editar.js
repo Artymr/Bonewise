@@ -2,31 +2,38 @@
 
 // === MODO EDICIÓN (subsección dentro de buscarPacientes) ===
 let editMode = false;
-let editingIndex = -1;
+let editingPaciente= null;
 const editarForm = document.getElementById('editarPacienteForm');
 
 // Función para descargar paciente (JSON)
-function descargarPaciente(index) {
-  const p = pacientes[index];
+function descargarPaciente(id) {
+  const p = pacientes.find(p => p._id === id);
   if (!p) return;
-  
+
   const dataStr = JSON.stringify(p, null, 2);
   const dataBlob = new Blob([dataStr], { type: 'application/json' });
   const url = URL.createObjectURL(dataBlob);
+
   const link = document.createElement('a');
   link.href = url;
   link.download = `paciente_${p.nombre.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
+
   URL.revokeObjectURL(url);
 }
 
+
 // Función EDITAR paciente
-function editPaciente(index) {
-  const patient = pacientes[index];
+let editingId= null;
+function editPaciente(id) {
+  const patient = pacientes.find(p => p._id === id);
   if (!patient) return;
   
   editMode = true;
-  editingIndex = index;
+  editingId= id;
+  editingPaciente = patient;
   bloquearMenu(true);
   
   // Ocultar tabla, mostrar form edición
@@ -101,7 +108,6 @@ document.getElementById('btnVolverEditar')?.addEventListener('click', cancelarEd
 // Función para cancelar edición
 function cancelarEdicion() {
   editMode = false;
-  editingIndex = -1;
   bloquearMenu(false);
   editarForm.style.display = 'none';
   const tableContainer = document.querySelector('#buscarPacientes .table-responsive') || document.querySelector('#buscarPacientes table').parentElement;
@@ -110,7 +116,7 @@ function cancelarEdicion() {
 }
 
 // Submit formulario EDICIÓN
-editarForm?.addEventListener('submit', (e) => {
+editarForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
   
   const nombreInput = e.target.querySelector('#nombre');
@@ -147,13 +153,27 @@ editarForm?.addEventListener('submit', (e) => {
     }
   });
   
-  // Actualizar paciente en la lista
-  data.primerRegistro = pacientes[editingIndex].primerRegistro;
-  data.ultimaActualizacion = now;
-  pacientes[editingIndex] = data;
-  localStorage.setItem('pacientes', JSON.stringify(pacientes));
-  bloquearMenu(false);
-  actualizarDashboard();
-  
-  cancelarEdicion();
+// Mantener fechas originales
+data.primerRegistro = editingPaciente.primerRegistro;
+data.ultimaActualizacion = new Date();
+
+try {
+  const res = await fetch(`/api/pacientes/${editingId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error('Error al actualizar');
+  await res.json();
+} catch (err) {
+  console.error('Error al actualizar paciente:', err);
+  alert('Error al actualizar paciente');
+  return;
+}
+
+bloquearMenu(false);
+actualizarDashboard();
+await cargarPacientes();  // Recarga la lista desde MongoDB
+cancelarEdicion();
+
 });
