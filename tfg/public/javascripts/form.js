@@ -52,3 +52,25 @@ nombreInput?.addEventListener('blur', () => {
     nombreInput.classList.remove('is-invalid');
   }
 });
+
+// ======= T-SCORE sliders =======
+// Esta función servirá para cualquier slider en cualquier parte del DOM
+function updateTScoreText(slider) {
+  const container = slider.closest('.col-md-4, .form-group, .mb-3');
+  const valueSpan = container?.querySelector('.t-score-val');
+  if (valueSpan) {
+    valueSpan.textContent = slider.value;
+  }
+}
+
+// Escuchar cambios manuales del usuario
+document.addEventListener('input', (e) => {
+  if (e.target.classList.contains('t-score')) {
+    updateTScoreText(e.target);
+  }
+});
+
+// Sincronización inicial para el formulario de "Nuevo Paciente"
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.t-score').forEach(s => updateTScoreText(s));
+});

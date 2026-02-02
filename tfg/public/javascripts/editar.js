@@ -62,6 +62,17 @@ function populateFormCompletamente(patientData) {
       }
     }
   });
+
+  // actualizar valores de los sliders T-score
+  const sliders = editarForm.querySelectorAll('.t-score');
+  sliders.forEach(slider => {
+    const container = slider.closest('.col-md-4');
+    const valueSpan = container?.querySelector('.t-score-val');
+    if (valueSpan) {
+      valueSpan.textContent = slider.value;
+    }
+  });
+
   // recalcular IMC 
   setTimeout(() => {
     const pesoField = editarForm.querySelector('#peso');
