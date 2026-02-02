@@ -4,11 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
-var connectDB = require('./tfg/config/db');
+var connectDB = require('./config/db');
 
 
-var indexRouter = require('./tfg/routes/index');
-var usersRouter = require('./tfg/routes/users');
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-const pacientesRouter = require('./tfg/routes/pacientesRoutes');
+const pacientesRouter = require('./routes/pacientesRoutes');
 console.log('rutas cargadas correctamente:', pacientesRouter);
 
 app.use('/api/pacientes', (req, res, next) => {
