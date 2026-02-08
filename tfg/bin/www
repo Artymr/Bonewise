@@ -88,4 +88,15 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+
+  const { spawn } = require('child_process');
+
+  setTimeout(() => {
+    spawn('cmd', ['/c', 'start', '', `http://localhost:${port}`], {
+      detached: true,
+      stdio: 'ignore'
+    }).unref();
+  }, 1000);
 }
+
+

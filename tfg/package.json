@@ -13,5 +13,15 @@
     "http-errors": "~1.6.3",
     "mongoose": "^9.1.5",
     "morgan": "~1.9.1"
-  }
+  },
+  "pkg": {
+    "assets": [
+      "public/**/*",
+      "views/**/*"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ]
+  },
+  "bin": "./bin/www"
 }
