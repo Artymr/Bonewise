@@ -20,22 +20,47 @@ tallaEl?.addEventListener('input', calcIMC);
 const addFract = document.getElementById('addFract');
 const fracturasList = document.getElementById('fracturasList');
 
-addFract?.addEventListener('click', ()=>{
+addFract?.addEventListener('click', () => {
   const loc = document.getElementById('fractura_loc').value.trim();
   const edad = document.getElementById('fractura_edad').value.trim();
   const num = document.getElementById('fractura_num').value.trim();
-  if(!loc && !edad) return;
+
+  if (!loc && !edad) return;
 
   const div = document.createElement('div');
   div.className = 'alert alert-secondary d-flex justify-content-between align-items-center py-1';
-  div.innerHTML = `<div><strong>${loc}</strong>${edad?` — edad: ${edad}`:''}${num?` — n: ${num}`:''}</div><button type="button" class="btn-close" aria-label="Eliminar"></button>`;
-  div.querySelector('.btn-close').addEventListener('click', ()=>div.remove());
+
+  div.innerHTML = `
+    <div>
+      <strong>${loc}</strong>
+      ${edad ? ` — edad: ${edad}` : ''}
+      ${num ? ` — n: ${num}` : ''}
+    </div>
+    <button type="button" class="btn-close" aria-label="Eliminar"></button>
+  `;
+
+  // añadir a la lista
   fracturasList.appendChild(div);
-  
-  document.getElementById('fractura_loc').value='';
-  document.getElementById('fractura_edad').value='';
-  document.getElementById('fractura_num').value='';
+  updateFracturaPrevia(); // ← AQUÍ
+
+  // botón eliminar
+  div.querySelector('.btn-close').addEventListener('click', () => {
+    div.remove();
+    updateFracturaPrevia(); // ← Y AQUÍ
+  });
+
+  // limpiar inputs
+  document.getElementById('fractura_loc').value = '';
+  document.getElementById('fractura_edad').value = '';
+  document.getElementById('fractura_num').value = '';
 });
+
+
+// Valor si/no de fractura previa para el calculo de FRAX
+function updateFracturaPrevia() {
+  const hidden = document.getElementById('fractura_previa');
+  hidden.value = fracturasList.children.length > 0 ? 'si' : 'no';
+}
 
 //validacion en el formulario
 function validarNombre(nombre) {
@@ -74,3 +99,56 @@ document.addEventListener('input', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.t-score').forEach(s => updateTScoreText(s));
 });
+
+// ======= Cálculo FRAX aproximado mejorado (para España) =======
+function calcFraxMejorado() {
+  const edad = Number(document.getElementById('edad')?.value) || 0;
+  const sexo = document.getElementById('sexo')?.value === 'Femenino'; // true si femenino
+  const peso = Number(document.getElementById('peso')?.value) || 0;
+  const talla = Number(document.getElementById('talla')?.value) || 0;
+  const tCuello = Number(document.getElementById('t_cuello')?.value) || null;
+
+  if (!edad || peso <= 0 || talla <= 0) {
+    document.getElementById('riesgo_frax').value = '';
+    return;
+  }
+
+  const imc = peso / Math.pow(talla / 100, 2);
+
+  // 1. Base + edad + sexo (aprox FRAX España mujer 50a ~ -3.0 logit)
+  let logit = -4.0 + 0.058 * Math.max(0, edad - 50) + (sexo ? 0.42 : 0);
+
+  // 2. Factores de riesgo (betas FRAX approx)
+  if (getCheckbox('fract_previa')) logit += 1.0;
+  if (getCheckbox('fx_cadera_fam')) logit += 0.5; 
+  if (getCheckbox('tabaquismo')) logit += 0.3; 
+  if (getCheckbox('alcohol')) logit += 0.3;        
+  if (getCheckbox('corticoides')) logit += 0.6; 
+  if (getCheckbox('artritis')) logit += 0.7;     
+  if (getCheckbox('osteo_sec')) logit += 0.5;  
+
+  // 3. IMC continuo (penaliza bajo)
+  logit += Math.max(-0.1 * (25 - imc), 0);  // + si IMC <25
+
+  // 4. T-score continuo (clave: gradual!)
+  if (!isNaN(tCuello)) {
+    logit += 0.45 * (-tCuello);  // ~doble riesgo por SD
+  }
+
+  // 5. Probabilidad 10a (sin muerte, approx)
+  const risk = 100 / (1 + Math.exp(-logit));
+  const porcentaje = Math.min(risk.toFixed(1), 30.0);  // Cap realista
+
+  document.getElementById('riesgo_frax').value = porcentaje;
+}
+
+// Helper para checkboxes (adapta IDs)
+function getCheckbox(id) {
+  return document.getElementById(id)?.checked || false;
+}
+
+// Eventos (mismo que antes, añade #fract_previa etc.)
+document.addEventListener('input', calcFraxMejorado);
+document.addEventListener('change', calcFraxMejorado);
+document.addEventListener('DOMContentLoaded', calcFraxMejorado);
+

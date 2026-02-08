@@ -21,7 +21,7 @@ const PacienteSchema = new mongoose.Schema({
   fx_cadera_fam: String,
   fx_osteo_fam: String,
   tabaquismo: String,
-  alcohol: Number,
+  alcohol: String,
   actividad: String,
   dieta: String,
   corticoides: String,

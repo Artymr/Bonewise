@@ -7,13 +7,7 @@
         </div>
         <div class="col-md-4 position-relative">
   <label class="form-label required">Nombre completo</label>
-  <input 
-    type="text" 
-    class="form-control" 
-    id="nombre" 
-    name="nombre" 
-    required
-  >
+  <input type="text" class="form-control" id="nombre" name="nombre" required>
   <div class="invalid-feedback">
     El nombre debe contener solo letras y al menos nombre y un apellido.
   </div>
@@ -70,7 +64,7 @@
             </div>
             <div class="col-md-4">
               <label class="form-label">Historia de caídas (último año)</label>
-              <input type="text" class="form-control" id="caidas" name="caidas" placeholder="nº de caídas / frecuencia">
+              <input type="text" class="form-control" id="caidas" name="caidas" placeholder="nº de caídas">
             </div>
             <div class="col-md-4">
               <label class="form-label">Enfermedades asociadas</label>
@@ -124,8 +118,12 @@
             </select>
           </div>
           <div class="col-md-3">
-            <label class="form-label">Alcohol (u/día)</label>
-            <input type="number" step="0.1" class="form-control" id="alcohol" name="alcohol" placeholder="unidades/día">
+            <label class="form-label">Alcohol >= 3 unidades/día</label>
+            <select class="form-select" id="alcohol" name="alcohol">
+              <option value="">--</option>
+              <option>no</option>
+              <option>si</option>
+            </select>
           </div>
           <div class="col-md-3">
             <label class="form-label">Actividad física</label>
@@ -152,13 +150,25 @@
               <label class="form-label">Corticoides sistémicos ≥3 meses</label>
               <select class="form-select" id="corticoides" name="corticoides">
                 <option value="">--</option>
-                <option>No</option>
-                <option>Sí</option>
+                <option>no</option>
+                <option>si</option>
               </select>
             </div>
-            <div class="col-md-4">
-              <label class="form-label">Fármacos asociados (inhibidores aromatasa, heparina, anticonv.)</label>
-              <input type="text" class="form-control" id="farmacos" name="farmacos">
+            <div class="col-md-2">
+              <label class="form-label">Artritis reumatoide</label>
+              <select class="form-select" id="artritis" name="artritis">
+                <option value="">--</option>
+                <option>no</option>
+                <option>si</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Osteoporosis secundaria</label>
+              <select class="form-select" id="osteo_sec" name="osteo_sec">
+                <option value="">--</option>
+                <option>no</option>
+                <option>si</option>
+              </select>
             </div>
             <div class="col-md-4">
               <label class="form-label">Tratamiento antiosteoporótico actual</label>
@@ -175,14 +185,14 @@
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label">DXA - T-score columna lumbar</label>
-              <input type="range" class="form-range t-score" name="t_lumbar" min="-3" max="0" step="0.1" value="0" >
+              <input type="range" class="form-range t-score" id="t_lumbar" name="t_lumbar" min="-3" max="0" step="0.1" value="0" >
               <div class="text-muted">
               Valor: <span class="t-score-val">0</span>
             </div>
             </div>
             <div class="col-md-4">
               <label class="form-label">DXA - T-score cuello femoral</label>
-              <input type="range" class="form-range t-score" name="t_cuello" min="-3" max="0" step="0.1" value="0">
+              <input type="range" class="form-range t-score" id="t_cuello" name="t_cuello" min="-3" max="0" step="0.1" value="0">
               <div class="text-muted">
               Valor: <span class="t-score-val">0</span>
             </div>
@@ -213,12 +223,18 @@
         <div class="card-body">
           <div class="row g-3">
             <div class="col-md-4">
-              <label class="form-label">Riesgo según FRAX (%)</label>
+              <label class="form-label">Cálculo FRAX (%) estimado</label>
               <input type="number" step="0.1" class="form-control" id="riesgo_frax" name="riesgo_frax" readonly>
             </div>
             <div class="col-md-4">
               <label class="form-label">Riesgo según DMO / T-score</label>
-              <input type="text" class="form-control" id="riesgo_dmo" name="riesgo_dmo" placeholder="Bajo / Moderado / Alto / Muy alto">
+              <select class="form-select" id="riesgo_dmo" name="riesgo_dmo">
+                <option value="">--</option>
+                <option>Bajo</option>
+                <option>Moderado</option>
+                <option>Alto</option>
+                <option>Muy alto</option>
+              </select>
             </div>
             <div class="col-md-4">
               <label class="form-label">Comentario / Plan</label>
