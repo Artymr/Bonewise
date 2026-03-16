@@ -64,17 +64,33 @@ function updateFracturaPrevia() {
 
 //validacion en el formulario
 function validarNombre(nombre) {
-  const pattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ]+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñüÜ]+){1,2}$/;
+  const pattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ\s]+$/;
   return pattern.test(nombre.trim());
 }
 
+function validarApellidos(apellidos) {
+  const pattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ]+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñüÜ]+)+$/;
+  return pattern.test(apellidos.trim());
+}
+
+
 //validar mientras se escribe
 const nombreInput = document.getElementById('nombre');
+const apellidosInput = document.getElementById('apellidos');
+
 nombreInput?.addEventListener('blur', () => {
   if (nombreInput.value.trim() && !validarNombre(nombreInput.value)) {
     nombreInput.classList.add('is-invalid');
   } else {
     nombreInput.classList.remove('is-invalid');
+  }
+});
+
+apellidosInput?.addEventListener('blur', () => {
+  if (apellidosInput.value.trim() && !validarApellidos(apellidosInput.value)) {
+    apellidosInput.classList.add('is-invalid');
+  } else {
+    apellidosInput.classList.remove('is-invalid');
   }
 });
 

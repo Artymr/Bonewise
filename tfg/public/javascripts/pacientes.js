@@ -22,13 +22,21 @@ document.getElementById('osteoform')?.addEventListener('submit', async e => {
   e.preventDefault();
 
   const nombre = document.getElementById('nombre');
+  const apellidos = document.getElementById('apellidos');
 
   if (!validarNombre(nombre.value)) {
     nombre.classList.add('is-invalid');
     return;
   }
 
+  if (!validarApellidos(apellidos.value)) {
+    apellidos.classList.add('is-invalid');
+    return;
+  }
+
   const data = Object.fromEntries(new FormData(e.target));
+  data.nombre= `${apellidos.value.trim()}, ${nombre.value.trim()}`;
+  delete data.apellidos;
   const now = new Date().toLocaleDateString('es-ES');
 
   //data.primerRegistro = now;

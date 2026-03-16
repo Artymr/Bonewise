@@ -5,13 +5,23 @@
         <div class="card-header bg-light">
           <strong>1. Datos generales</strong>
         </div>
-        <div class="col-md-4 position-relative">
-  <label class="form-label required">Nombre completo</label>
-  <input type="text" class="form-control" id="nombre" name="nombre" required>
-  <div class="invalid-feedback">
-    El nombre debe contener solo letras y al menos nombre y un apellido.
-  </div>
-</div>
+        <div class="row g-3">
+          <div class="col-md-4 position-relative">
+            <label class="form-label required">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+            <div class="invalid-feedback">
+              El nombre solo debe contener letras.
+            </div>
+          </div>
+
+          <div class="col-md-4 position-relative">
+            <label class="form-label required">Apellido</label>
+            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+            <div class="invalid-feedback">
+              Introduzca al menos dos apellidos.
+            </div>
+          </div>
+        </div>
         <div class="card-body row g-3">
           <div class="col-md-2">
             <label class="form-label required">Edad</label>

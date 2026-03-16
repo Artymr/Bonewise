@@ -25,10 +25,11 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, '0.0.0.0');
 server.on('error', onError);
 server.on('listening', onListening);
 console.log(`Servidor ejecutándose en http://localhost:${port}/`);
+console.log('==========PRESIONA CTRL+C PARA DETENER EL SERVIDOR=============');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -88,15 +89,6 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
-
-  const { spawn } = require('child_process');
-
-  setTimeout(() => {
-    spawn('cmd', ['/c', 'start', '', `http://localhost:${port}`], {
-      detached: true,
-      stdio: 'ignore'
-    }).unref();
-  }, 1000);
 }
 
 

@@ -47,6 +47,13 @@ function editPaciente(id) {
 
 // Función para rellenar el formulario de edición completamente
 function populateFormCompletamente(patientData) {
+  if (patientData.nombre) {
+    const parts = patientData.nombre.split(',');
+    if (parts.length === 2) {
+      document.getElementById('apellidos').value = parts[0].trim();
+      document.getElementById('nombre').value = parts[1].trim();
+    }
+  }
   Object.keys(patientData).forEach(key => {
     if (key !== 'primerRegistro' && key !== 'ultimaActualizacion' && key !== 'fracturas') {
       let field = editarForm.querySelector(`[name="${key}"]`);
@@ -131,9 +138,13 @@ editarForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
   
   const nombreInput = e.target.querySelector('#nombre');
-  const pattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ]+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñüÜ]+){1,2}$/;
-  if (!pattern.test(nombreInput.value.trim())) {
+  const apellidosInput = e.target.querySelector('#apellidos');
+  if (!validarNombre(nombreInput.value)) {
     nombreInput.classList.add('is-invalid');
+    return;
+  }
+  if (!validarApellidos(apellidosInput.value)) {
+    apellidosInput.classList.add('is-invalid');
     return;
   }
 
@@ -141,6 +152,10 @@ editarForm?.addEventListener('submit', async (e) => {
   const formData = new FormData(e.target.closest('form') || editarForm);
   const data = Object.fromEntries(formData.entries());
   const now = new Date().toLocaleDateString('es-ES');
+
+  //combinar nombre y apellidos
+  data.nombre= `${apellidosInput.value.trim()}, ${nombreInput.value.trim()}`;
+  delete data.apellidos;
 
   const allFields=editarForm.querySelectorAll('input, select, textarea');
   allFields.forEach(field=>{
