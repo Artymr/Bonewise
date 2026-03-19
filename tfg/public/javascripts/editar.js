@@ -5,6 +5,30 @@ let editMode = false;
 let editingPaciente= null;
 const editarForm = document.getElementById('editarPacienteForm');
 
+//limpiar errores dinamicamente
+editarForm?.addEventListener('input', e => {
+  if (e.target.classList.contains('is-invalid')) {
+    e.target.classList.remove('is-invalid');
+  }
+});
+function bloquearMenu(bloquear) {
+  const menuItems = document.querySelectorAll('#menu a');
+  menuItems.forEach(item => {
+    if (bloquear) {
+      item.classList.add('disabled');
+      item.setAttribute('aria-disabled', 'true');
+    } else {
+      item.classList.remove('disabled');
+      item.removeAttribute('aria-disabled');
+    }
+  });
+}
+function actualizarDashboard() {
+  if (typeof actualizarDashboard === 'function') {
+    actualizarDashboard();
+  }
+}
+
 // Función para descargar paciente (JSON)
 function descargarPaciente(id) {
   const p = pacientes.find(p => p._id === id);
@@ -47,15 +71,13 @@ function editPaciente(id) {
 
 // Función para rellenar el formulario de edición completamente
 function populateFormCompletamente(patientData) {
-  if (patientData.nombre) {
-    const parts = patientData.nombre.split(',');
-    if (parts.length === 2) {
-      document.getElementById('apellidos').value = parts[0].trim();
-      document.getElementById('nombre').value = parts[1].trim();
-    }
+  if (patientData.nombre && patientData.nombre.includes(',')) {
+    const [apellidos, nombre] = patientData.nombre.split(',');
+    editarForm.querySelector('#nombre').value = nombre.trim();
+    editarForm.querySelector('#apellidos').value = apellidos.trim();
   }
   Object.keys(patientData).forEach(key => {
-    if (key !== 'primerRegistro' && key !== 'ultimaActualizacion' && key !== 'fracturas') {
+    if (key !== 'primerRegistro' && key !== 'ultimaActualizacion' && key !== 'fracturas' && key !== 'nombre') {
       let field = editarForm.querySelector(`[name="${key}"]`);
       if (!field) field = editarForm.querySelector(`#${key}`);
       if (!field) field = editarForm.querySelector(`[id="${key}"]`);
@@ -132,19 +154,43 @@ function cancelarEdicion() {
   tableContainer.style.display = '';
   updateTable();
 }
+  //funcion para scrollear al error
+  function scrollToFirstError() {
+    const firstError = editarForm.querySelector('.is-invalid');
+    if (firstError) {
+      const container = firstError.closest('.mb-3') || firstError;
+      container.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+      setTimeout(() => firstError.focus(), 500);
+    }
+  }
 
 // Submit formulario EDICIÓN
 editarForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
-  const nombreInput = e.target.querySelector('#nombre');
-  const apellidosInput = e.target.querySelector('#apellidos');
+
+  //Limpiar errores previos
+  editarForm.querySelectorAll('.is-invalid').forEach(el => {
+    el.classList.remove('is-invalid');
+  });
+  const nombreInput = editarForm.querySelector('#nombre');
+  const apellidosInput = editarForm.querySelector('#apellidos');
+
+  let hayError = false;
   if (!validarNombre(nombreInput.value)) {
     nombreInput.classList.add('is-invalid');
-    return;
+    hayError = true;
   }
   if (!validarApellidos(apellidosInput.value)) {
     apellidosInput.classList.add('is-invalid');
+    hayError = true;
+  }
+
+  //si hay error, scroll al primero
+  if (hayError) {
+    scrollToFirstError();
     return;
   }
 

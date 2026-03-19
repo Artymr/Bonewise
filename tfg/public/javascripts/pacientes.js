@@ -2,6 +2,10 @@
 
 let pacientes = []; // esta variable se llena desde data.js
 
+let currentSort = {
+  field: null,
+  direction: 1 // 1 para ascendente, -1 para descendente
+}
 //cargar de api
 async function cargarPacientes() {
   try {
@@ -15,7 +19,40 @@ async function cargarPacientes() {
     pacientes = [];
   }
 }
-document.addEventListener('DOMContentLoaded', cargarPacientes);
+//logica de ordenacion
+function sortPacientes(field) {
+  if (currentSort.field === field) {
+    currentSort.direction *= -1; // invertir dirección
+  } else {
+    currentSort.field = field;
+    currentSort.direction = 1; // ascendente por defecto
+  }
+
+  pacientes.sort((a, b) => {
+    let valA = a[field];
+    let valB = b[field];
+
+    // manejar valores nulos
+    if (!valA) return -1;
+    if (!valB) return 1;
+
+    // comparar fechas
+    if (field.includes('Registro') || field.includes('Actualizacion')) {
+      return (new Date(valA) - new Date(valB)) * currentSort.direction;
+    }
+
+    //comparar numeros
+    if (typeof valA === 'number') {
+      return (valA - valB) * currentSort.direction;
+    }
+
+    //comparar texto
+    return valA.toString().localeCompare(valB.toString(), 'es', { sensitivity: 'base' }) * currentSort.direction;
+  });
+
+  updateTable();
+  updateSortIcons();
+}
 
 // submit del formulario de nuevo paciente
 document.getElementById('osteoform')?.addEventListener('submit', async e => {
@@ -84,6 +121,21 @@ function updateTable() {
   });
 }
 
+//flechas de ordenacion
+function updateSortIcons() {
+  document.querySelectorAll('.sortable'). forEach(th => {
+    const field = th.dataset.field;
+    //limpiar iconos
+    th.innerHTML = th.textContent.replace(/[\u25B2\u25BC]/g, '').trim();
+
+    if (field === currentSort.field) {
+      const arrow = currentSort.direction === 1 ? ' \u25B2' : ' \u25BC';
+      th.innerHTML += arrow;
+    }
+  });
+}
+
+
 function formatearFecha(fecha) {
   if (!fecha) return '';
   const d = new Date(fecha);
@@ -108,4 +160,16 @@ document.getElementById('pacientesTableBody')?.addEventListener('click', async (
   } else if (btn.textContent.includes('Descargar')) {
     descargarPaciente(id);
   }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  cargarPacientes();
+
+  document.querySelectorAll('.sortable').forEach(th => {
+    th.computedStyleMap.cursor= 'pointer';
+    th.addEventListener('click', () => {
+      const field = th.dataset.field;
+      sortPacientes(field);
+    });
+  });
 });

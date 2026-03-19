@@ -111,16 +111,16 @@
     <div id="buscarPacientes" class="container mt-4" style="display:none;">
   <h3>Pacientes</h3>
   <table class="table table-striped">
-    <thead>
-  <tr>
-    <th>Nombre</th>
-    <th>Edad</th>
-    <th>Sexo</th>
-    <th>Primer registro</th>
-    <th>Última actualización</th> 
-    <th></th> <!-- Columna vacía para botones -->
-  </tr>
-</thead>
+  <thead>
+    <tr>
+      <th class="sortable" data-field="nombre">Nombre</th>
+      <th class="sortable" data-field="edad">Edad</th>
+      <th class="sortable" data-field="sexo">Sexo</th>
+      <th class="sortable" data-field="primerRegistro">Primer registro</th>
+      <th class="sortable" data-field="ultimaActualizacion">Última actualización</th> 
+      <th></th> <!-- Columna vacía para botones -->
+    </tr>
+  </thead>
 
     <tbody id="pacientesTableBody">
       <!-- Aquí se irán añadiendo los pacientes más adelante -->
