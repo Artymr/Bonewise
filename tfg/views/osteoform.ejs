@@ -188,21 +188,58 @@
         </div>
       </div>
 
-      <!-- 6. Exploraciones y pruebas -->
+      <!-- 6. Tratamientos osteoporóticos -->
       <div class="card section-card">
-        <div class="card-header bg-light"><strong>6. Exploraciones y pruebas</strong></div>
+        <div class="card-header bg-light"><strong>6. Tratamientos osteoporóticos</strong></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Corticoides sistémicos ≥3 meses</label>
+              <select class="form-select" id="corticoides" name="corticoides">
+                <option value="">--</option>
+                <option>no</option>
+                <option>si</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Artritis reumatoide</label>
+              <select class="form-select" id="artritis" name="artritis">
+                <option value="">--</option>
+                <option>no</option>
+                <option>si</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Osteoporosis secundaria</label>
+              <select class="form-select" id="osteo_sec" name="osteo_sec">
+                <option value="">--</option>
+                <option>no</option>
+                <option>si</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tratamiento antiosteoporótico actual</label>
+              <input type="text" class="form-control" id="trat_actual" name="trat_actual" placeholder="ej: alendronato, denosumab...">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Exploraciones y pruebas -->
+      <div class="card section-card">
+        <div class="card-header bg-light"><strong>7. Exploraciones y pruebas</strong></div>
         <div class="card-body">
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label">DXA - T-score columna lumbar</label>
-              <input type="range" class="form-range t-score" id="t_lumbar" name="t_lumbar" min="-3" max="0" step="0.1" value="0" >
+              <input type="range" class="form-range t-score" id="t_lumbar" name="t_lumbar" min="-3.5" max="0" step="0.1" value="0" >
               <div class="text-muted">
               Valor: <span class="t-score-val">0</span>
             </div>
             </div>
             <div class="col-md-4">
               <label class="form-label">DXA - T-score cuello femoral</label>
-              <input type="range" class="form-range t-score" id="t_cuello" name="t_cuello" min="-3" max="0" step="0.1" value="0">
+              <input type="range" class="form-range t-score" id="t_cuello" name="t_cuello" min="-3.5" max="0" step="0.1" value="0">
               <div class="text-muted">
               Valor: <span class="t-score-val">0</span>
             </div>
@@ -227,9 +264,9 @@
         </div>
       </div>
 
-      <!-- 7. Estratificación de riesgo -->
+      <!-- 8. Estratificación de riesgo -->
       <div class="card section-card">
-        <div class="card-header bg-light"><strong>7. Estratificación de riesgo</strong></div>
+        <div class="card-header bg-light"><strong>8. Estratificación de riesgo</strong></div>
         <div class="card-body">
           <div class="row g-3">
             <div class="col-md-4">
@@ -238,13 +275,7 @@
             </div>
             <div class="col-md-4">
               <label class="form-label">Riesgo según DMO / T-score</label>
-              <select class="form-select" id="riesgo_dmo" name="riesgo_dmo">
-                <option value="">--</option>
-                <option>Bajo</option>
-                <option>Moderado</option>
-                <option>Alto</option>
-                <option>Muy alto</option>
-              </select>
+              <input type="text" class="form-control" id="riesgo_dmo" name="riesgo_dmo" readonly>
             </div>
           </div>
         </div>

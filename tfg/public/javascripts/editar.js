@@ -102,6 +102,8 @@ function populateFormCompletamente(patientData) {
     }
   });
 
+  calcularRiesgoDMO(); // Calcular riesgo DMO al cargar la página
+
   // recalcular IMC 
   setTimeout(() => {
     const pesoField = editarForm.querySelector('#peso');

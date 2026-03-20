@@ -108,12 +108,14 @@ function updateTScoreText(slider) {
 document.addEventListener('input', (e) => {
   if (e.target.classList.contains('t-score')) {
     updateTScoreText(e.target);
+    calcularRiesgoDMO(); // Recalcular riesgo DMO al cambiar cualquier T-score
   }
 });
 
 // Sincronización inicial para el formulario de "Nuevo Paciente"
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.t-score').forEach(s => updateTScoreText(s));
+  calcularRiesgoDMO(); // Calcular riesgo DMO al cargar la página
 });
 
 // ======= Cálculo FRAX aproximado mejorado (para España) =======
@@ -162,6 +164,32 @@ function calcFraxMejorado() {
 function getCheckbox(id) {
   return document.getElementById(id)?.checked || false;
 }
+
+//calcular riesgo dmo
+function calcularRiesgoDMO() {
+  const tLumbar = parseFloat(document.getElementById('t_lumbar')?.value);
+  const tCuello = parseFloat(document.getElementById('t_cuello')?.value);
+  const riesgoInput = document.getElementById('riesgo_dmo');
+
+  if (isNaN(tLumbar) || isNaN(tCuello)) {
+    riesgoInput.value = '';
+    return;
+  }
+
+  const peor = Math.min(tLumbar, tCuello);
+  let riesgo = '';
+  if (peor >= -2) {
+    riesgo = 'Bajo';
+  } else if (peor >= -2.5) {
+    riesgo = 'Moderado';
+  } else if (peor >= -3) {
+    riesgo = 'Alto';
+  } else {
+    riesgo = 'Muy alto';
+  }
+  riesgoInput.value = riesgo;
+}
+
 
 // Eventos (mismo que antes, añade #fract_previa etc.)
 document.addEventListener('input', calcFraxMejorado);
