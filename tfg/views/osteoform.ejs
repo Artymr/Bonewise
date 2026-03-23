@@ -15,7 +15,7 @@
           </div>
 
           <div class="col-md-4 position-relative">
-            <label class="form-label required">Apellido</label>
+            <label class="form-label required">Apellidos</label>
             <input type="text" class="form-control" id="apellidos" name="apellidos" required>
             <div class="invalid-feedback">
               Introduzca al menos dos apellidos.
@@ -144,86 +144,63 @@
               <option>Ejercicio regular</option>
             </select>
           </div>
-          <div class="col-md-3">
+        </div>
+      </div>
+
+      <!-- 5. Tratamientos previos y actuales no oseos -->
+      <div class="card section-card">
+        <div class="card-header bg-light"><strong>5. Tratamientos previos y actuales no oseos</strong></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Corticoides sistémicos ≥3 meses</label>
+              <select class="form-select" id="corticoides" name="corticoides">
+                <option value="">--</option>
+                <option>no</option>
+                <option>si</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Artritis reumatoide</label>
+              <select class="form-select" id="artritis" name="artritis">
+                <option value="">--</option>
+                <option>no</option>
+                <option>si</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+            <label class="form-label">Otros</label>
+            <input type="text" class="form-control" id="dieta" name="dieta">
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Tratamientos previos osteoporóticos -->
+      <div class="card section-card">
+        <div class="card-header bg-light"><strong>6. Tratamientos previos osteoporóticos</strong></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-2">
+              <label class="form-label">Osteoporosis secundaria</label>
+              <select class="form-select" id="osteo_sec" name="osteo_sec">
+                <option value="">--</option>
+                <option>no</option>
+                <option>si</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tratamiento antiosteoporótico actual</label>
+              <input type="text" class="form-control" id="trat_actual" name="trat_actual" placeholder="ej: alendronato, denosumab...">
+            </div>
+            <div class="col-md-3">
             <label class="form-label">Dieta / Calcio</label>
             <input type="text" class="form-control" id="dieta" name="dieta" placeholder="Aporte de calcio / déficit nutricional">
           </div>
-        </div>
-      </div>
-
-      <!-- 5. Tratamientos previos y actuales -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>5. Tratamientos previos y actuales</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Corticoides sistémicos ≥3 meses</label>
-              <select class="form-select" id="corticoides" name="corticoides">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label class="form-label">Artritis reumatoide</label>
-              <select class="form-select" id="artritis" name="artritis">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label class="form-label">Osteoporosis secundaria</label>
-              <select class="form-select" id="osteo_sec" name="osteo_sec">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Tratamiento antiosteoporótico actual</label>
-              <input type="text" class="form-control" id="trat_actual" name="trat_actual" placeholder="ej: alendronato, denosumab...">
-            </div>
           </div>
         </div>
       </div>
-
-      <!-- 6. Tratamientos osteoporóticos -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>6. Tratamientos osteoporóticos</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Corticoides sistémicos ≥3 meses</label>
-              <select class="form-select" id="corticoides" name="corticoides">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label class="form-label">Artritis reumatoide</label>
-              <select class="form-select" id="artritis" name="artritis">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label class="form-label">Osteoporosis secundaria</label>
-              <select class="form-select" id="osteo_sec" name="osteo_sec">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Tratamiento antiosteoporótico actual</label>
-              <input type="text" class="form-control" id="trat_actual" name="trat_actual" placeholder="ej: alendronato, denosumab...">
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       <!-- 7. Exploraciones y pruebas -->
       <div class="card section-card">
