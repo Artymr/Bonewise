@@ -25,7 +25,6 @@ function recogerDatosFormulario(form) {
   const tCuello = Number(form.querySelector('#t_cuello')?.value);
   const riesgoFRAX = Number(form.querySelector('#riesgo_frax')?.value);
   const riesgoDMO = form.querySelector('#riesgo_dmo')?.value?.toLowerCase();
-  const tratActual = form.querySelector('#trat_actual')?.value;
   const corticoides = form.querySelector('#corticoides')?.value;
 
   return {

@@ -1,280 +1,537 @@
-<form id="osteoform" class="mb-5" method ="post" action="/api/pacientes">
-
-      <!-- 1. Datos generales -->
-      <div class="card section-card">
-        <div class="card-header bg-light">
-          <strong>1. Datos generales</strong>
-        </div>
-        <div class="row g-3">
-          <div class="col-md-4 position-relative">
-            <label class="form-label required">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" required>
-            <div class="invalid-feedback">
-              El nombre solo debe contener letras.
-            </div>
-          </div>
-
-          <div class="col-md-4 position-relative">
-            <label class="form-label required">Apellidos</label>
-            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-            <div class="invalid-feedback">
-              Introduzca al menos dos apellidos.
-            </div>
-          </div>
-        </div>
-        <div class="card-body row g-3">
-          <div class="col-md-2">
-            <label class="form-label required">Edad</label>
-            <input type="number" min="0" class="form-control" id="edad" name="edad" required>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label required">Sexo</label>
-            <select class="form-select" id="sexo" name="sexo" required>
-              <option value="">--</option>
-              <option>Femenino</option>
-              <option>Masculino</option>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label required">Peso (kg)</label>
-            <input type="number" step="0.1" min="0" class="form-control" id="peso" name="peso" required>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label required">Talla (cm)</label>
-            <input type="number" step="0.1" min="0" class="form-control" id="talla" name="talla" required>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">IMC</label>
-            <input type="text" class="form-control" id="imc" readonly>
-          </div>
-        </div>
+<form id="osteoform" class="mb-5" method="post" action="/api/pacientes">
+  <!-- 1. Datos generales -->
+  <div class="card section-card">
+    <div class="card-header bg-light">
+      <strong>1. Datos generales</strong>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-4 position-relative">
+        <label class="form-label required">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombre"
+          name="nombre"
+          required
+        />
+        <div class="invalid-feedback">El nombre solo debe contener letras.</div>
       </div>
 
-      <!-- 2. Antecedentes personales -->
-      <div class="card section-card">
-        <div class="card-header bg-light">
-          <strong>2. Antecedentes personales</strong>
-        </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <label class="form-label">Fracturas previas por fragilidad</label>
-            <div id="fracturasList" class="mb-2"></div>
-            <div class="row g-2">
-              <div class="col-md-4"><input id="fractura_loc" type="text" class="form-control" placeholder="Localización"></div>
-              <div class="col-md-3"><input id="fractura_edad" type="number" class="form-control" placeholder="Edad en la fractura"></div>
-              <div class="col-md-3"><input id="fractura_num" type="number" class="form-control" placeholder="Número (opcional)"></div>
-              <div class="col-md-2"><button type="button" class="btn btn-outline-secondary w-100" id="addFract">Añadir</button></div>
-            </div>
-          </div>
-
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Menopausia (edad inicio)</label>
-              <input type="number" class="form-control" id="menopausia" name ="menopausia" placeholder="edad">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Historia de caídas (último año)</label>
-              <input type="text" class="form-control" id="caidas" name="caidas" placeholder="nº de caídas">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Enfermedades asociadas</label>
-              <input type="text" class="form-control" id="enf_asoc" name="enf_asoc" placeholder="ej: hipertiroidismo, ERC...">
-            </div>
-          </div>
-
-          <div class="mt-3">
-            <label class="form-label">Cirugías / Trasplantes relevantes</label>
-            <textarea class="form-control" id="cirugias" name="cirugias" rows="2"></textarea>
-          </div>
-        </div>
+      <div class="col-md-4 position-relative">
+        <label class="form-label required">Apellidos</label>
+        <input
+          type="text"
+          class="form-control"
+          id="apellidos"
+          name="apellidos"
+          required
+        />
+        <div class="invalid-feedback">Introduzca al menos dos apellidos.</div>
       </div>
-
-      <!-- 3. Antecedentes familiares -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>3. Antecedentes familiares</strong></div>
-        <div class="card-body row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Fractura de cadera en familiares</label>
-            <select class="form-select" id="fx_cadera_fam" name="fx_cadera_fam">
-              <option value="">--</option>
-              <option>No</option>
-              <option>Sí (madre)</option>
-              <option>Sí (padre)</option>
-              <option>Sí (hermanos)</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Historia familiar de osteoporosis</label>
-            <select class="form-select" id="fx_osteo_fam" name="fx_osteo_fam">
-              <option value="">--</option>
-              <option>No</option>
-              <option>Sí</option>
-            </select>
-          </div>
-        </div>
+    </div>
+    <div class="card-body row g-3">
+      <div class="col-md-2">
+        <label class="form-label required">Edad</label>
+        <input
+          type="number"
+          min="0"
+          class="form-control"
+          id="edad"
+          name="edad"
+          required
+        />
       </div>
-
-      <!-- 4. Estilo de vida -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>4. Estilo de vida y factores modificables</strong></div>
-        <div class="card-body row g-3">
-          <div class="col-md-3">
-            <label class="form-label">Tabaquismo</label>
-            <select class="form-select" id="tabaquismo" name="tabaquismo">
-              <option value="">--</option>
-              <option>No fumador</option>
-              <option>Exfumador</option>
-              <option>Fumador actual</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Alcohol >= 3 unidades/día</label>
-            <select class="form-select" id="alcohol" name="alcohol">
-              <option value="">--</option>
-              <option>no</option>
-              <option>si</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Actividad física</label>
-            <select class="form-select" id="actividad" name="actividad">
-              <option value="">--</option>
-              <option>Sedentario</option>
-              <option>Actividad ligera</option>
-              <option>Ejercicio regular</option>
-            </select>
-          </div>
-        </div>
+      <div class="col-md-2">
+        <label class="form-label required">Sexo</label>
+        <select class="form-select" id="sexo" name="sexo" required>
+          <option value="">--</option>
+          <option>Femenino</option>
+          <option>Masculino</option>
+        </select>
       </div>
-
-      <!-- 5. Tratamientos previos y actuales no oseos -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>5. Tratamientos previos y actuales no oseos</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Corticoides sistémicos ≥3 meses</label>
-              <select class="form-select" id="corticoides" name="corticoides">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label class="form-label">Artritis reumatoide</label>
-              <select class="form-select" id="artritis" name="artritis">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-            <label class="form-label">Otros</label>
-            <input type="text" class="form-control" id="dieta" name="dieta">
-          </div>
-          </div>
-        </div>
+      <div class="col-md-2">
+        <label class="form-label required">Peso (kg)</label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          class="form-control"
+          id="peso"
+          name="peso"
+          required
+        />
       </div>
-
-      <!-- 6. Tratamientos previos osteoporóticos -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>6. Tratamientos previos osteoporóticos</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-2">
-              <label class="form-label">Osteoporosis secundaria</label>
-              <select class="form-select" id="osteo_sec" name="osteo_sec">
-                <option value="">--</option>
-                <option>no</option>
-                <option>si</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Tratamiento antiosteoporótico actual</label>
-              <input type="text" class="form-control" id="trat_actual" name="trat_actual" placeholder="ej: alendronato, denosumab...">
-            </div>
-            <div class="col-md-3">
-            <label class="form-label">Dieta / Calcio</label>
-            <input type="text" class="form-control" id="dieta" name="dieta" placeholder="Aporte de calcio / déficit nutricional">
-          </div>
-          </div>
-        </div>
+      <div class="col-md-2">
+        <label class="form-label required">Talla (cm)</label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          class="form-control"
+          id="talla"
+          name="talla"
+          required
+        />
       </div>
-      
-
-      <!-- 7. Exploraciones y pruebas -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>7. Exploraciones y pruebas</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">DXA - T-score columna lumbar</label>
-              <input type="range" class="form-range t-score" id="t_lumbar" name="t_lumbar" min="-3.5" max="0" step="0.1" value="0" >
-              <div class="text-muted">
-              Valor: <span class="t-score-val">0</span>
-            </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">DXA - T-score cuello femoral</label>
-              <input type="range" class="form-range t-score" id="t_cuello" name="t_cuello" min="-3.5" max="0" step="0.1" value="0">
-              <div class="text-muted">
-              Valor: <span class="t-score-val">0</span>
-            </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Z-score</label>
-              <input type="number" step="0.1" class="form-control" id="zscore" name="zscore">
-            </div>
-          </div>
-
-          <hr>
-
-          <div class="mt-3">
-            <label class="form-label">Analítica (Vit D, Ca, P, PTH, TSH, función renal)</label>
-            <textarea class="form-control" id="analitica" name="analitica" rows="2"></textarea>
-          </div>
-
-          <div class="mt-3">
-            <label class="form-label">Radiología (si sospecha fractura vertebral oculta)</label>
-            <textarea class="form-control" id="radiologia" name="radiologia" rows="2"></textarea>
-          </div>
-        </div>
+      <div class="col-md-2">
+        <label class="form-label">IMC</label>
+        <input type="text" class="form-control" id="imc" readonly />
       </div>
-
-      <!-- 8. Estratificación de riesgo -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>8. Estratificación de riesgo</strong></div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Cálculo FRAX (%) estimado</label>
-              <input type="number" step="0.1" class="form-control" id="riesgo_frax" name="riesgo_frax" readonly>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Riesgo según DMO / T-score</label>
-              <input type="text" class="form-control" id="riesgo_dmo" name="riesgo_dmo" readonly>
-            </div>
-          </div>
-        </div>
-      </div>
-
-            <!-- 9. Planes médicos -->
-      <div class="card section-card">
-        <div class="card-header bg-light"><strong>9. Planes médicos</strong></div>
-        <div class="card-body row g-3">
-            <div class="col-md-12">
-              <label class="form-label">Comentario / Plan</label>
-              <textarea class="form-control" id="plan" name="plan" rows="2"></textarea>
-            </div>
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-between align-items-center mb-5">
-  <!-- Botones del fondo -->
-  <button type="reset" class="btn btn-danger">Limpiar</button>
-  <div class="d-flex gap-2">
-    <button type="button" class="btn btn-success btn-decision">Dar respuesta</button>
-    <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
   </div>
-</div>
+
+  <!-- 2. Antecedentes personales -->
+  <div class="card section-card">
+    <div class="card-header bg-light">
+      <strong>2. Antecedentes personales</strong>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Fracturas previas de fragilidad</label>
+
+          <div class="form-check">
+            <input
+              class="form-check-input fractura-check"
+              type="checkbox"
+              id="fract_no"
+              value="no"
+            />
+            <label class="form-check-label" for="fract_no">No</label>
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input fractura-check"
+              type="checkbox"
+              id="fract_cadera"
+              value="cadera"
+            />
+            <label class="form-check-label" for="fract_cadera"
+              >Sí (cadera)</label
+            >
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input fractura-check"
+              type="checkbox"
+              id="fract_collar"
+              value="collar"
+            />
+            <label class="form-check-label" for="fract_collar"
+              >Sí (colles)</label
+            >
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input fractura-check"
+              type="checkbox"
+              id="fract_vertebra"
+              value="vertebra"
+            />
+            <label class="form-check-label" for="fract_vertebra"
+              >Sí (vértebra)</label
+            >
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input fractura-check"
+              type="checkbox"
+              id="fract_otro"
+              value="otro"
+            />
+            <label class="form-check-label" for="fract_otro">Sí (otro)</label>
+          </div>
+
+          <input type="hidden" name="fract_previa" id="fract_previa" />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Enfermedades asociadas</label>
+
+          <div class="form-check">
+            <input
+              class="form-check-input enf_asoc-check"
+              type="checkbox"
+              id="enf_no"
+              value="no"
+            />
+            <label class="form-check-label" for="enf_no">No</label>
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input enf_asoc-check"
+              type="checkbox"
+              id="enf_renal"
+              value="renal"
+            />
+            <label class="form-check-label" for="enf_renal">Sí (renal)</label>
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input enf_asoc-check"
+              type="checkbox"
+              id="enf_cardiaca"
+              value="cardiaca"
+            />
+            <label class="form-check-label" for="enf_cardiaca"
+              >Sí (cardiaca)</label
+            >
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input enf_asoc-check"
+              type="checkbox"
+              id="enf_reumatica"
+              value="reumatica"
+            />
+            <label class="form-check-label" for="enf_reumatica"
+              >Sí (reumática)</label
+            >
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input enf_asoc-check"
+              type="checkbox"
+              id="enf_otro"
+              value="otro"
+            />
+            <label class="form-check-label" for="enf_otro">Sí (otro)</label>
+          </div>
+
+          <input
+            type="hidden"
+            name="enfermedades_asociadas"
+            id="enfermedades_asociadas"
+          />
+        </div>
+      </div>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-2">
+          <label class="form-label">Menopausia (edad inicio)</label>
+          <input
+            type="number"
+            class="form-control"
+            id="menopausia"
+            name="menopausia"
+            placeholder="edad"
+          />
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Historia de caídas (último año)</label>
+          <input
+            type="text"
+            class="form-control"
+            id="caidas"
+            name="caidas"
+            placeholder="nº de caídas"
+          />
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Osteoporosis secundaria</label>
+          <select class="form-select" id="osteo_sec" name="osteo_sec">
+            <option value="">--</option>
+            <option>no</option>
+            <option>si</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Trasplantes relevantes</label>
+          <select class="form-select" id="trasplantes" name="trasplantes">
+            <option value="">--</option>
+            <option>No</option>
+            <option>Sí</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">Oncológicas</label>
+          <select class="form-select" id="oncologicas" name="oncologicas">
+            <option value="">--</option>
+            <option>No</option>
+            <option>Sí</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 3. Antecedentes familiares -->
+  <div class="card section-card">
+    <div class="card-header bg-light">
+      <strong>3. Antecedentes familiares</strong>
+    </div>
+    <div class="card-body row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Fractura de cadera/vertebra en familiares</label>
+        <select class="form-select" id="fx_cadera_fam" name="fx_cadera_fam">
+          <option value="">--</option>
+          <option>No</option>
+          <option>Sí</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Historia familiar de osteoporosis</label>
+        <select class="form-select" id="fx_osteo_fam" name="fx_osteo_fam">
+          <option value="">--</option>
+          <option>No</option>
+          <option>Sí</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Estilo de vida -->
+  <div class="card section-card">
+    <div class="card-header bg-light">
+      <strong>4. Estilo de vida y factores modificables</strong>
+    </div>
+    <div class="card-body row g-3">
+      <div class="col-md-3">
+        <label class="form-label">Tabaquismo</label>
+        <select class="form-select" id="tabaquismo" name="tabaquismo">
+          <option value="">--</option>
+          <option>No fumador</option>
+          <option>Exfumador</option>
+          <option>Fumador actual</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Alcohol >= 3 unidades/día</label>
+        <select class="form-select" id="alcohol" name="alcohol">
+          <option value="">--</option>
+          <option>no</option>
+          <option>si</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Actividad física</label>
+        <select class="form-select" id="actividad" name="actividad">
+          <option value="">--</option>
+          <option>Sedentario</option>
+          <option>Actividad ligera</option>
+          <option>Ejercicio regular</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Tratamientos previos y actuales no oseos -->
+  <div class="card section-card">
+    <div class="card-header bg-light">
+      <strong>5. Tratamientos previos y actuales no oseos</strong>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Corticoides sistémicos ≥3 meses</label>
+          <select class="form-select" id="corticoides" name="corticoides">
+            <option value="">--</option>
+            <option>no</option>
+            <option>si</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Biológicas reumatoides</label>
+          <select class="form-select" id="artritis" name="artritis">
+            <option value="">--</option>
+            <option>no</option>
+            <option>si</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Otros</label>
+          <input type="text" class="form-control" id="otros" name="otros" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Tratamientos previos osteoporóticos -->
+  <div class="card section-card">
+    <div class="card-header bg-light">
+      <strong>6. Tratamientos previos osteoporóticos</strong>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-2">
+          <label class="form-label">Calcio/Vitamina D</label>
+          <select
+            class="form-select"
+            id="calcio_vitamina_d"
+            name="calcio_vitamina_d"
+          >
+            <option value="">--</option>
+            <option>no</option>
+            <option>si</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Bifosfonatos</label>
+          <select class="form-select" id="bifosfonatos" name="bifosfonatos">
+            <option value="">--</option>
+            <option>no</option>
+            <option>si(Alendronato)</option>
+            <option>si(Risedronato)</option>
+            <option>si(Zoledronato)</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Denosumab</label>
+          <select class="form-select" id="denosumab" name="denosumab">
+            <option value="">--</option>
+            <option>no</option>
+            <option>si</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Anabolicos</label>
+          <select class="form-select" id="anabolicos" name="anabolicos">
+            <option value="">--</option>
+            <option>no</option>
+            <option>si(Romosozumab)</option>
+            <option>si(Teriparatida)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Exploraciones y pruebas -->
+  <div class="card section-card">
+    <div class="card-header bg-light">
+      <strong>7. Exploraciones y pruebas</strong>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">DXA - T-score columna lumbar</label>
+          <input
+            type="range"
+            class="form-range t-score"
+            id="t_lumbar"
+            name="t_lumbar"
+            min="-4"
+            max="0"
+            step="0.1"
+            value="0"
+          />
+          <div class="text-muted">
+            Valor: <span class="t-score-val">0</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">DXA - T-score cuello femoral</label>
+          <input
+            type="range"
+            class="form-range t-score"
+            id="t_cuello"
+            name="t_cuello"
+            min="-4"
+            max="0"
+            step="0.1"
+            value="0"
+          />
+          <div class="text-muted">
+            Valor: <span class="t-score-val">0</span>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="mt-3">
+        <label class="form-label"
+          >Analítica (Vit D, Ca, PTH)</label
+        >
+        <textarea
+          class="form-control"
+          id="analitica"
+          name="analitica"
+          rows="2"
+        ></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 8. Estratificación de riesgo -->
+  <div class="card section-card">
+    <div class="card-header bg-light">
+      <strong>8. Estratificación de riesgo</strong>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Cálculo FRAX (%) estimado</label>
+          <input
+            type="number"
+            step="0.1"
+            class="form-control"
+            id="riesgo_frax"
+            name="riesgo_frax"
+            readonly
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Riesgo según DMO / T-score</label>
+          <input
+            type="text"
+            class="form-control"
+            id="riesgo_dmo"
+            name="riesgo_dmo"
+            readonly
+          />
+        </div>
+          <div class="col-md-4">
+          <label class="form-label">Riesgo total</label>
+          <input
+            type="text"
+            class="form-control"
+            id="riesgo_dmo"
+            name="riesgo_dmo"
+            readonly
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Planes médicos -->
+  <div class="card section-card">
+    <div class="card-header bg-light"><strong>9. Planes médicos</strong></div>
+    <div class="card-body row g-3">
+      <div class="col-md-12">
+        <label class="form-label">Comentario / Plan</label>
+        <textarea
+          class="form-control"
+          id="plan"
+          name="plan"
+          rows="2"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <!-- Botones del fondo -->
+    <button type="reset" class="btn btn-danger">Limpiar</button>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-success btn-decision">
+        Dar respuesta
+      </button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </div>
 </form>

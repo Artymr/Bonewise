@@ -16,52 +16,6 @@ function calcIMC(){
 pesoEl?.addEventListener('input', calcIMC);
 tallaEl?.addEventListener('input', calcIMC);
 
-// Añadir fractura (punto 2 del formulario )
-const addFract = document.getElementById('addFract');
-const fracturasList = document.getElementById('fracturasList');
-
-addFract?.addEventListener('click', () => {
-  const loc = document.getElementById('fractura_loc').value.trim();
-  const edad = document.getElementById('fractura_edad').value.trim();
-  const num = document.getElementById('fractura_num').value.trim();
-
-  if (!loc && !edad) return;
-
-  const div = document.createElement('div');
-  div.className = 'alert alert-secondary d-flex justify-content-between align-items-center py-1';
-
-  div.innerHTML = `
-    <div>
-      <strong>${loc}</strong>
-      ${edad ? ` — edad: ${edad}` : ''}
-      ${num ? ` — n: ${num}` : ''}
-    </div>
-    <button type="button" class="btn-close" aria-label="Eliminar"></button>
-  `;
-
-  // añadir a la lista
-  fracturasList.appendChild(div);
-  updateFracturaPrevia(); // ← AQUÍ
-
-  // botón eliminar
-  div.querySelector('.btn-close').addEventListener('click', () => {
-    div.remove();
-    updateFracturaPrevia(); // ← Y AQUÍ
-  });
-
-  // limpiar inputs
-  document.getElementById('fractura_loc').value = '';
-  document.getElementById('fractura_edad').value = '';
-  document.getElementById('fractura_num').value = '';
-});
-
-
-// Valor si/no de fractura previa para el calculo de FRAX
-function updateFracturaPrevia() {
-  const hidden = document.getElementById('fractura_previa');
-  hidden.value = fracturasList.children.length > 0 ? 'si' : 'no';
-}
-
 //validacion en el formulario
 function validarNombre(nombre) {
   const pattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ\s]+$/;
@@ -137,7 +91,8 @@ function calcFraxMejorado() {
   let logit = -4.0 + 0.058 * Math.max(0, edad - 50) + (sexo ? 0.42 : 0);
 
   // 2. Factores de riesgo (betas FRAX approx)
-  if (getCheckbox('fract_previa')) logit += 1.0;
+  const fracturas = document.getElementById('fracturasInput')?.value || '';
+  if (fracturas && fracturas !== 'no') logit += 1.0;
   if (getCheckbox('fx_cadera_fam')) logit += 0.5; 
   if (getCheckbox('tabaquismo')) logit += 0.3; 
   if (getCheckbox('alcohol')) logit += 0.3;        
@@ -178,11 +133,11 @@ function calcularRiesgoDMO() {
 
   const peor = Math.min(tLumbar, tCuello);
   let riesgo = '';
-  if (peor >= -2) {
+  if (peor >= -1) {
     riesgo = 'Bajo';
   } else if (peor >= -2.5) {
     riesgo = 'Moderado';
-  } else if (peor >= -3) {
+  } else if (peor >= -3.5) {
     riesgo = 'Alto';
   } else {
     riesgo = 'Muy alto';
@@ -190,8 +145,58 @@ function calcularRiesgoDMO() {
   riesgoInput.value = riesgo;
 }
 
+//logica de fracturas previas
+const fractChecks = document.querySelectorAll('.fractura-check');
+const fractNo = document.getElementById('fract_no');
+const fracturasInput = document.getElementById('fracturasInput');
 
-// Eventos (mismo que antes, añade #fract_previa etc.)
+fractChecks.forEach(chk => {
+  chk.addEventListener('change', () => {
+    if (chk === fractNo && chk.checked) {
+      fractChecks.forEach(c => {
+         if (c !== fractNo) c.checked = false;
+         });
+    } else if (chk !== fractNo && chk.checked) {
+      fractNo.checked = false;
+    }
+    actualizarFracturas();
+  });
+});
+
+function actualizarFracturas() {
+  const seleccionadas = [];
+  fractChecks.forEach(chk => {
+    if (chk.checked) seleccionadas.push(chk.value);
+  });
+  fracturasInput.value = seleccionadas.join(', ');
+}
+
+//logica de enfermedades asociadas
+const enfChecks = document.querySelectorAll('.enf_asoc-check');
+const enfNo = document.getElementById('enf_no');
+const enfermedadesInput = document.getElementById('enfermedades_asociadas');
+enfChecks.forEach(chk => {
+  chk.addEventListener('change', () => {
+    if (chk === enfNo && chk.checked) {
+      enfChecks.forEach(c => {
+         if (c !== enfNo) c.checked = false;
+         });
+    } else if (chk !== enfNo && chk.checked) {
+      enfNo.checked = false;
+    }
+    actualizarEnfermedades();
+  });
+});
+
+function actualizarEnfermedades() {
+  const seleccionadas = [];
+  enfChecks.forEach(chk => {
+    if (chk.checked) seleccionadas.push(chk.value);
+  });
+  enfermedadesInput.value = seleccionadas.join(', ');
+}
+
+// Eventos (mismo que antes, añade #previa etc.)
 document.addEventListener('input', calcFraxMejorado);
 document.addEventListener('change', calcFraxMejorado);
 document.addEventListener('DOMContentLoaded', calcFraxMejorado);
