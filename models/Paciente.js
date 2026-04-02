@@ -15,6 +15,8 @@ const PacienteSchema = new mongoose.Schema({
   talla: Number,
   imc: Number,
   fracturas: [FracturaSchema],
+  fract_previa: String,
+  enfermedades_asociadas: String,
   menopausia: Number,
   caidas: String,
   osteo_sec: String,

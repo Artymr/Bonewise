@@ -91,7 +91,7 @@ function calcFraxMejorado() {
   let logit = -4.0 + 0.058 * Math.max(0, edad - 50) + (sexo ? 0.42 : 0);
 
   // 2. Factores de riesgo (betas FRAX approx)
-  const fracturas = document.getElementById('fracturasInput')?.value || '';
+  const fracturas = document.getElementById('fract_previa')?.value || '';
   if (fracturas && fracturas !== 'no') logit += 1.0;
   if (getCheckbox('fx_cadera_fam')) logit += 0.5; 
   if (getCheckbox('tabaquismo')) logit += 0.3; 
@@ -148,7 +148,7 @@ function calcularRiesgoDMO() {
 //logica de fracturas previas
 const fractChecks = document.querySelectorAll('.fractura-check');
 const fractNo = document.getElementById('fract_no');
-const fracturasInput = document.getElementById('fracturasInput');
+const fracturasInput = document.getElementById('fract_previa');
 
 fractChecks.forEach(chk => {
   chk.addEventListener('change', () => {
@@ -165,10 +165,17 @@ fractChecks.forEach(chk => {
 
 function actualizarFracturas() {
   const seleccionadas = [];
-  fractChecks.forEach(chk => {
-    if (chk.checked) seleccionadas.push(chk.value);
+  document.querySelectorAll('.fractura-check').forEach(chk => {
+    if (chk.checked) {
+      if (chk.value === 'otro') {
+        const texto = document.getElementById('fract_otro_text').value.trim();
+        seleccionadas.push(texto ? `Otro: ${texto}` : 'Otro');
+      } else {
+        seleccionadas.push(chk.value);
+      }
+    }
   });
-  fracturasInput.value = seleccionadas.join(', ');
+  document.getElementById('fract_previa').value = seleccionadas.join(',');
 }
 
 //logica de enfermedades asociadas
@@ -190,11 +197,46 @@ enfChecks.forEach(chk => {
 
 function actualizarEnfermedades() {
   const seleccionadas = [];
-  enfChecks.forEach(chk => {
-    if (chk.checked) seleccionadas.push(chk.value);
+  document.querySelectorAll('.enf_asoc-check').forEach(chk => {
+    if (chk.checked) {
+      if (chk.value === 'otro') {
+        const texto = document.getElementById('enf_otro_text').value.trim();
+        seleccionadas.push(texto ? `Otro: ${texto}` : 'Otro');
+      } else {
+        seleccionadas.push(chk.value);
+      }
+    }
   });
-  enfermedadesInput.value = seleccionadas.join(', ');
+  document.getElementById('enfermedades_asociadas').value = seleccionadas.join(',');
 }
+
+// Mostrar campos de texto para "otro" en fracturas y enfermedades
+const fractOtroCheck = document.getElementById('fract_otro');
+const fractOtroText = document.getElementById('fract_otro_text');
+
+fractOtroCheck?.addEventListener('change', () => {
+  if (fractOtroCheck.checked) {
+    fractOtroText.classList.remove('d-none');
+  } else {
+    fractOtroText.classList.add('d-none');
+    fractOtroText.value = '';
+  }
+});
+
+const enfOtroCheck = document.getElementById('enf_otro');
+const enfOtroText = document.getElementById('enf_otro_text');
+
+enfOtroCheck?.addEventListener('change', () => {
+  if (enfOtroCheck.checked) {
+    enfOtroText.classList.remove('d-none');
+  } else {
+    enfOtroText.classList.add('d-none');
+    enfOtroText.value = '';
+  }
+});
+
+fractOtroText?.addEventListener('input', actualizarFracturas);
+enfOtroText?.addEventListener('input', actualizarEnfermedades);
 
 // Eventos (mismo que antes, añade #previa etc.)
 document.addEventListener('input', calcFraxMejorado);
