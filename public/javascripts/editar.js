@@ -69,8 +69,31 @@ function editPaciente(id) {
   editarForm.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Función para rellenar el formulario de edición completamente
+// Función para resetear campos dinámicos (checkboxes "otro" y sus inputs)
+function resetCamposDinamicos() {
+  // Ocultar y limpiar inputs "otro"
+  const camposTexto = [
+    '#fract_otro_text',
+    '#enf_otro_text'
+  ];
+
+  camposTexto.forEach(selector => {
+    const input = editarForm.querySelector(selector);
+    if (input) {
+      input.value = '';
+      input.classList.add('d-none');
+    }
+  });
+
+  // Desmarcar TODOS los checkboxes
+  editarForm.querySelectorAll('.fractura-check, .enf_asoc-check').forEach(chk => {
+    chk.checked = false;
+  });
+}
+
+// Función para rellenar el formulario de edición completamente (lo que hace que funcione el editar)
 function populateFormCompletamente(patientData) {
+  resetCamposDinamicos();
   if (patientData.nombre && patientData.nombre.includes(',')) {
     const [apellidos, nombre] = patientData.nombre.split(',');
     editarForm.querySelector('#nombre').value = nombre.trim();
@@ -142,6 +165,56 @@ function populateFormCompletamente(patientData) {
   if (cardTitle) {
     cardTitle.innerHTML = `<i class="fas fa-edit me-2"></i>Editando: <strong>${patientData.nombre || 'Paciente'}</strong>`;
   }
+
+// restaurar fracturas previas
+if (patientData.fract_previa) {
+  const valores = patientData.fract_previa.split(',').map(v => v.trim());
+  editarForm.querySelectorAll('.fractura-check').forEach(chk => {
+    chk.checked = false;
+    if (chk.value === 'otro') {
+      const otro = valores.find(v => v.toLowerCase().startsWith('otro:'));
+      if (otro) {
+        chk.checked = true;
+        const texto = otro.replace(/^otro:\s*/i, '').trim();
+        const input = editarForm.querySelector('#fract_otro_text');
+        if (input) {
+          input.value = texto;
+          input.classList.remove('d-none');
+        }
+      }
+    } else if (valores.includes(chk.value)) {
+      chk.checked = true;
+    }
+  });
+}
+
+// restaurar enfermedades asociadas
+if (patientData.enfermedades_asociadas) {
+  const valores = patientData.enfermedades_asociadas.split(',').map(v => v.trim());
+  editarForm.querySelectorAll('.enf_asoc-check').forEach(chk => {
+    chk.checked = false;
+    if (chk.value === 'otro') {
+      const otro = valores.find(v => v.toLowerCase().startsWith('otro:'));
+      if (otro) {
+        chk.checked = true;
+        const texto = otro.replace(/^otro:\s*/i, '').trim();
+        const input = editarForm.querySelector('#enf_otro_text');
+        if (input) {
+          input.value = texto;
+          input.classList.remove('d-none');
+        }
+      }
+    } else if (valores.includes(chk.value)) {
+      chk.checked = true;
+    }
+  });
+  }
+  ['trasplantes', 'oncologicas', 'osteo_sec'].forEach(campo => {
+  const select = editarForm.querySelector(`#${campo}`);
+  if (select && patientData[campo] !== undefined) {
+    select.value = patientData[campo];
+  }
+  });
 }
 
 // Botón VOLVER
@@ -201,16 +274,13 @@ editarForm?.addEventListener('submit', async (e) => {
   const data = Object.fromEntries(formData.entries());
   const now = new Date().toLocaleDateString('es-ES');
 
+  data.trasplantes = editarForm.querySelector('#trasplantes')?.value || '';
+  data.oncologicas = editarForm.querySelector('#oncologicas')?.value || '';
+  data.osteo_sec = editarForm.querySelector('#osteo_sec')?.value || '';
+
   //combinar nombre y apellidos
   data.nombre= `${apellidosInput.value.trim()}, ${nombreInput.value.trim()}`;
   delete data.apellidos;
-
-  const allFields=editarForm.querySelectorAll('input, select, textarea');
-  allFields.forEach(field=>{
-    if(!field.name && field.id && !data[field.id]){
-      data[field.id]=field.value;
-    }
-  });
   
   // Recopilar fracturas
   data.fracturas = [];
@@ -244,6 +314,21 @@ try {
   alert('Error al actualizar paciente');
   return;
 }
+
+//listeners para "otros" en fracturas y enfermedades asociadas
+const editFractOtroCheck = editarForm?.querySelector('#fract_otro');
+const editFractOtroText = editarForm?.querySelector('#fract_otro_text');
+editFractOtroCheck?.addEventListener('change', () => {
+  editFractOtroText?.classList.toggle('d-none', !editFractOtroCheck.checked);
+  if (!editFractOtroCheck.checked) editFractOtroText.value = '';
+});
+
+const editEnfOtroCheck = editarForm?.querySelector('#enf_otro');
+const editEnfOtroText = editarForm?.querySelector('#enf_otro_text');
+editEnfOtroCheck?.addEventListener('change', () => {
+  editEnfOtroText?.classList.toggle('d-none', !editEnfOtroCheck.checked);
+  if (!editEnfOtroCheck.checked) editEnfOtroText.value = '';
+});
 
 bloquearMenu(false);
 actualizarDashboard();

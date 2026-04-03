@@ -20,6 +20,8 @@ const PacienteSchema = new mongoose.Schema({
   menopausia: Number,
   caidas: String,
   osteo_sec: String,
+  trasplantes: String,
+  oncologicas: String,
   enf_asoc: String,
   fx_cadera_fam: String,
   fx_osteo_fam: String,
@@ -40,6 +42,7 @@ const PacienteSchema = new mongoose.Schema({
   radiologia: String,
   riesgo_frax: Number,
   riesgo_dmo: String,
+  riesgo_total: String,
   plan: String,
   primerRegistro: { type: Date, default: Date.now },
   ultimaActualizacion: { type: Date, default: Date.now }
