@@ -8,7 +8,7 @@ const FracturaSchema = new mongoose.Schema({
 
 const PacienteSchema = new mongoose.Schema(
   {
-    nombre: { type: String, required: true },
+    nombre: { type: String, required: true, set: (v) => v.toUpperCase() },
     apellidos: String,
     edad: Number,
     sexo: String,

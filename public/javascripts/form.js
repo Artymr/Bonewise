@@ -31,6 +31,15 @@ function validarApellidos(apellidos) {
 const nombreInput = document.getElementById("nombre");
 const apellidosInput = document.getElementById("apellidos");
 
+nombreInput?.addEventListener("input", () => {
+  nombreInput.value = nombreInput.value.toUpperCase();
+});
+
+apellidosInput?.addEventListener("input", () => {
+  apellidosInput.value = apellidosInput.value.toUpperCase();
+});
+
+
 nombreInput?.addEventListener("blur", () => {
   if (nombreInput.value.trim() && !validarNombre(nombreInput.value)) {
     nombreInput.classList.add("is-invalid");
