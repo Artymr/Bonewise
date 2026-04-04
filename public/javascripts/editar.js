@@ -255,7 +255,7 @@ editarForm?.addEventListener("submit", async (e) => {
   data.osteo_sec = editarForm.querySelector("#osteo_sec")?.value || "";
 
   //combinar nombre y apellidos
-  data.nombre = `${apellidosInput.value.trim()}, ${nombreInput.value.trim()}`;
+  data.nombre = `${apellidosInput.value.trim().toUpperCase()}, ${nombreInput.value.trim().toUpperCase}`;
   delete data.apellidos;
 
   // Recopilar fracturas
