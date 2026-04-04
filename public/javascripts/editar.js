@@ -115,20 +115,6 @@ function populateFormCompletamente(patientData) {
 
   calcularRiesgoDMO(); // Calcular riesgo DMO al cargar la página
 
-  // recalcular IMC
-  setTimeout(() => {
-    const pesoField = editarForm.querySelector("#peso");
-    const tallaField = editarForm.querySelector("#talla");
-    const imcField = editarForm.querySelector("#imc");
-    if (pesoField && tallaField && imcField) {
-      const p = parseFloat(pesoField.value || 0);
-      const t = parseFloat(tallaField.value || 0);
-      if (p > 0 && t > 0) {
-        imcField.value = (p / Math.pow(t / 100, 2)).toFixed(2);
-      }
-    }
-  }, 200);
-
   // Actualizar título del formulario de edición
   const cardTitle = editarForm.querySelector(".card-header h4");
   if (cardTitle) {
@@ -187,6 +173,8 @@ function populateFormCompletamente(patientData) {
       select.value = patientData[campo];
     }
   });
+
+  recalcularCamposDependientes();
 }
 
 // Botón VOLVER
@@ -255,7 +243,7 @@ editarForm?.addEventListener("submit", async (e) => {
   data.osteo_sec = editarForm.querySelector("#osteo_sec")?.value || "";
 
   //combinar nombre y apellidos
-  data.nombre = `${apellidosInput.value.trim().toUpperCase()}, ${nombreInput.value.trim().toUpperCase}`;
+  data.nombre = `${apellidosInput.value.trim().toUpperCase()}, ${nombreInput.value.trim().toUpperCase()}`;
   delete data.apellidos;
 
   // Recopilar fracturas

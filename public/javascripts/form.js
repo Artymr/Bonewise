@@ -1,20 +1,39 @@
 // ======= scripts específicos del formulario =======
 
 // Cálculo automático del IMC (índice de masa corporal)
-const pesoEl = document.getElementById("peso");
-const tallaEl = document.getElementById("talla");
-const imcEl = document.getElementById("imc");
-
-function calcIMC() {
-  const p = parseFloat(pesoEl.value);
-  const t = parseFloat(tallaEl.value);
-  if (p > 0 && t > 0) {
-    const m = p / Math.pow(t / 100, 2);
-    imcEl.value = m.toFixed(2);
-  } else imcEl.value = "";
+// ─── Helper: devuelve el campo del formulario activo ───────────────────────
+// Cuando el formulario de edición está visible (display:block), busca dentro
+// de él; si no, usa el formulario de nuevo paciente (comportamiento normal).
+function getActiveField(id) {
+  const ef = document.getElementById("editarPacienteForm");
+  if (ef && ef.style.display === "block") {
+    const field = ef.querySelector("#" + id);
+    if (field) return field;
+  }
+  return document.getElementById(id);
 }
-pesoEl?.addEventListener("input", calcIMC);
-tallaEl?.addEventListener("input", calcIMC);
+
+// ─── Cálculo IMC ───────────────────────────────────────────────────────────
+function calcIMC() {
+  const pesoField  = getActiveField("peso");
+  const tallaField = getActiveField("talla");
+  const imcField   = getActiveField("imc");
+  if (!pesoField || !tallaField || !imcField) return;
+  const p = parseFloat(pesoField.value);
+  const t = parseFloat(tallaField.value);
+  if (p > 0 && t > 0) {
+    imcField.value = (p / Math.pow(t / 100, 2)).toFixed(2);
+  } else {
+    imcField.value = "";
+  }
+}
+
+// Event delegation: captura peso/talla de CUALQUIER formulario del DOM
+document.addEventListener("input", (e) => {
+  if (e.target.id === "peso" || e.target.id === "talla") {
+    calcIMC();
+  }
+});
 
 //validacion en el formulario
 function validarNombre(nombre) {
@@ -82,14 +101,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ======= Cálculo FRAX aproximado mejorado (para España) =======
 function calcFraxMejorado() {
-  const edad = Number(document.getElementById("edad")?.value) || 0;
-  const sexo = document.getElementById("sexo")?.value === "Femenino"; // true si femenino
-  const peso = Number(document.getElementById("peso")?.value) || 0;
-  const talla = Number(document.getElementById("talla")?.value) || 0;
-  const tCuello = Number(document.getElementById("t_cuello")?.value) || null;
+  const edad = Number(getActiveField("edad")?.value) || 0;
+  const sexo = getActiveField("sexo")?.value === "Femenino"; // true si femenino
+  const peso = Number(getActiveField("peso")?.value) || 0;
+  const talla = Number(getActiveField("talla")?.value) || 0;
+  const tCuello = Number(getActiveField("t_cuello")?.value) || null;
+
+  const fraxOutPut = getActiveField("riesgo_frax");
+  if (!fraxOutPut) return;
 
   if (!edad || peso <= 0 || talla <= 0) {
-    document.getElementById("riesgo_frax").value = "";
+    fraxOutPut.value = "";
     return;
   }
 
@@ -99,7 +121,7 @@ function calcFraxMejorado() {
   let logit = -4.0 + 0.058 * Math.max(0, edad - 50) + (sexo ? 0.42 : 0);
 
   // 2. Factores de riesgo (betas FRAX approx)
-  const fracturas = document.getElementById("fract_previa")?.value || "";
+  const fracturas = getActiveField("fract_previa")?.value || "";
   if (fracturas && fracturas !== "no") logit += 1.0;
   if (getCheckbox("fx_cadera_fam")) logit += 0.5;
   if (getCheckbox("tabaquismo")) logit += 0.3;
@@ -112,7 +134,7 @@ function calcFraxMejorado() {
   logit += Math.max(-0.1 * (25 - imc), 0); // + si IMC <25
 
   // 4. T-score continuo (clave: gradual!)
-  if (!isNaN(tCuello)) {
+  if (tCuello !== null && !isNaN(tCuello)) {
     logit += 0.45 * -tCuello; // ~doble riesgo por SD
   }
 
@@ -120,19 +142,21 @@ function calcFraxMejorado() {
   const risk = 100 / (1 + Math.exp(-logit));
   const porcentaje = Math.min(risk.toFixed(1), 30.0); // Cap realista
 
-  document.getElementById("riesgo_frax").value = porcentaje;
+  fraxOutPut.value = porcentaje;
 }
 
 // Helper para checkboxes (adapta IDs)
 function getCheckbox(id) {
-  return document.getElementById(id)?.checked || false;
+  return getActiveField(id)?.checked || false;
 }
 
 //calcular riesgo dmo
 function calcularRiesgoDMO() {
-  const tLumbar = parseFloat(document.getElementById("t_lumbar")?.value);
-  const tCuello = parseFloat(document.getElementById("t_cuello")?.value);
-  const riesgoInput = document.getElementById("riesgo_dmo");
+  const tLumbar = parseFloat(getActiveField("t_lumbar")?.value);
+  const tCuello = parseFloat(getActiveField("t_cuello")?.value);
+  const riesgoInput = getActiveField("riesgo_dmo");
+
+  if (!riesgoInput) return;
 
   if (isNaN(tLumbar) || isNaN(tCuello)) {
     riesgoInput.value = "";
@@ -246,6 +270,13 @@ enfOtroCheck?.addEventListener("change", () => {
 
 fractOtroText?.addEventListener("input", actualizarFracturas);
 enfOtroText?.addEventListener("input", actualizarEnfermedades);
+
+//recalcular campos dinamicos al editar
+function recalcularCamposDependientes() {
+  calcIMC();
+  calcFraxMejorado();
+  calcularRiesgoDMO();
+}
 
 // Eventos (mismo que antes, añade #previa etc.)
 document.addEventListener("input", calcFraxMejorado);
