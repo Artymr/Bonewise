@@ -11,23 +11,6 @@ editarForm?.addEventListener("input", (e) => {
     e.target.classList.remove("is-invalid");
   }
 });
-function bloquearMenu(bloquear) {
-  const menuItems = document.querySelectorAll("#menu a");
-  menuItems.forEach((item) => {
-    if (bloquear) {
-      item.classList.add("disabled");
-      item.setAttribute("aria-disabled", "true");
-    } else {
-      item.classList.remove("disabled");
-      item.removeAttribute("aria-disabled");
-    }
-  });
-}
-function actualizarDashboard() {
-  if (typeof actualizarDashboard === "function") {
-    actualizarDashboard();
-  }
-}
 
 // Función para descargar paciente (JSON)
 function descargarPaciente(id) {
