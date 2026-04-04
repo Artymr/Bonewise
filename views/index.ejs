@@ -1,155 +1,198 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bonewise</title>
-  <link rel="icon" type="image/png" href="/images/favicon.png">
-  <!-- Bootstrap 5 CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel ="stylesheet" href="/stylesheets/style.css">
-</head>
-<body class="d-flex flex-column min-vh-100">
-  <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background-color:#585858;">
-  <div class="container-fluid flex-column align-items-center py-3 position-relative">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bonewise</title>
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+    <!-- Bootstrap 5 CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark mb-4"
+      style="background-color: #585858"
+    >
+      <div
+        class="container-fluid flex-column align-items-center py-3 position-relative"
+      >
+        <!-- Logo centrado arriba -->
+        <img
+          src="/images/logo.png"
+          alt="Logo Unidad Fragilidad Ósea"
+          style="height: 140px"
+          class="mb-3"
+        />
+        <!-- Línea divisoria entre logo y botones -->
+        <hr class="w-100 text-white opacity-50 my-2" />
+        <!-- Contenedor inferior con botones -->
+        <div
+          class="d-flex justify-content-center align-items-center w-100 mt-2 position-relative"
+        >
+          <!-- Menú centrado -->
+          <ul class="navbar-nav flex-row mx-auto">
+            <li class="nav-item mx-2">
+              <a class="nav-link menu-btn active" href="#inicio">Inicio</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link menu-btn" href="#nuevo">Nuevo paciente</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link menu-btn" href="#buscar">Buscar paciente</a>
+            </li>
+          </ul>
 
-    <!-- Logo centrado arriba -->
-    <img src="/images/logo.png" alt="Logo Unidad Fragilidad Ósea" style="height:140px;" class="mb-3">
-    <!-- Línea divisoria entre logo y botones -->
-    <hr class="w-100 text-white opacity-50 my-2">
-    <!-- Contenedor inferior con botones -->
-    <div class="d-flex justify-content-center align-items-center w-100 mt-2 position-relative">
-
-
-      <!-- Menú centrado -->
-      <ul class="navbar-nav flex-row mx-auto">
-  <li class="nav-item mx-2">
-    <a class="nav-link menu-btn active" href="#inicio">Inicio</a>
-  </li>
-  <li class="nav-item mx-2">
-    <a class="nav-link menu-btn" href="#nuevo">Nuevo paciente</a>
-  </li>
-  <li class="nav-item mx-2">
-    <a class="nav-link menu-btn" href="#buscar">Buscar paciente</a>
-  </li>
-</ul>
-
-
-      <!-- Boton Perfil-->
-      <div class="dropdown position-absolute end-0 me-3">
-        <a class="nav-link dropdown-toggle text-white menu-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Perfil
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#">Ver perfil</a></li>
-          <li><a class="dropdown-item" href="#">Configuración</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item text-danger" href="#">Cerrar sesión</a></li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</nav>
-  <main class="container">
-    <div id="inicio" class="mb-4">
-<!-- SECCIÓN DE BIENVENIDA -->
-      <div class="row mb-5">
-        <div class="col-12 text-center">
-          <h1 class="display-4 fw-bold text-dark mb-3">Bienvenido a BONEWISE</h1>
-          <p class="lead text-muted">Sistema de Diagnóstico y Seguimiento de Osteoporosis</p>
-        </div>
-      </div>
-
-      <div class="row mb-5 justify-content-center">
-        <div class="col-md-5 me-3">
-          <a href="#nuevo" class="btn btn-lg w-100" id="btnInicioNuevo" style="background-color: #2195A3; color: white; padding: 20px;">
-            <i class="fas fa-plus-circle me-2"></i> Nuevo Paciente
-          </a>
-        </div>
-        <div class="col-md-5">
-          <a href="#buscar" class="btn btn-lg btn-outline-secondary w-100" id="btnInicioBuscar" style="padding: 20px;">
-            <i class="fas fa-search me-2"></i> Buscar Paciente
-          </a>
-        </div>
-      </div>
-
-      <div class="row mb-5 justify-content-center">
-        <div class="col-md-4 mb-3">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-              <i class="fas fa-users" style="font-size: 3rem; color: #2195A3;"></i>
-              <h3 class="card-title mt-3">0</h3>
-              <p class="card-text text-muted">Pacientes Registrados</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-3">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
-              <i class="fas fa-clipboard-check" style="font-size: 3rem; color: #4CAF50;"></i>
-              <h3 class="card-title mt-3">0</h3>
-              <p class="card-text text-muted">Diagnósticos Hoy</p>
-            </div>
+          <!-- Boton Perfil-->
+          <div class="dropdown position-absolute end-0 me-3">
+            <a
+              class="nav-link dropdown-toggle text-white menu-btn"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Perfil
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Ver perfil</a></li>
+              <li><a class="dropdown-item" href="#">Configuración</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item text-danger" href="#">Cerrar sesión</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-    </div>
-<div id="osteoform" style="display:none;">
-<%- include('osteoform') %>
-</div>
+    </nav>
+    <main class="container">
+      <div id="inicio" class="mb-4">
+        <!-- SECCIÓN DE BIENVENIDA -->
+        <div class="row mb-5">
+          <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-dark mb-3">
+              Bienvenido a BONEWISE
+            </h1>
+            <p class="lead text-muted">
+              Sistema de Diagnóstico y Seguimiento de Osteoporosis
+            </p>
+          </div>
+        </div>
 
-    <div id="buscarPacientes" class="container mt-4" style="display:none;">
-  <h3>Pacientes</h3>
-  <table class="table table-striped">
-  <thead>
-    <tr>
-      <th class="sortable" data-field="nombre">Nombre</th>
-      <th class="sortable" data-field="edad">Edad</th>
-      <th class="sortable" data-field="sexo">Sexo</th>
-      <th class="sortable" data-field="primerRegistro">Primer registro</th>
-      <th class="sortable" data-field="ultimaActualizacion">Última actualización</th> 
-      <th></th> <!-- Columna vacía para botones -->
-    </tr>
-  </thead>
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-5 me-3">
+            <a
+              href="#nuevo"
+              class="btn btn-lg w-100"
+              id="btnInicioNuevo"
+              style="background-color: #2195a3; color: white; padding: 20px"
+            >
+              <i class="fas fa-plus-circle me-2"></i> Nuevo Paciente
+            </a>
+          </div>
+          <div class="col-md-5">
+            <a
+              href="#buscar"
+              class="btn btn-lg btn-outline-secondary w-100"
+              id="btnInicioBuscar"
+              style="padding: 20px"
+            >
+              <i class="fas fa-search me-2"></i> Buscar Paciente
+            </a>
+          </div>
+        </div>
 
-    <tbody id="pacientesTableBody">
-      <!-- Aquí se irán añadiendo los pacientes más adelante -->
-    </tbody>
-  </table>
-</div>
-<!-- MODAL/FORM EDITAR PACIENTE (dentro de buscarPacientes) -->
-<div id="editarPacienteForm" class="mt-5" style="display: none;">
-  <div class="card shadow-lg">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-      <h4 class="mb-0">
-        <i class="fas fa-edit me-2"></i>Editar Paciente
-      </h4>
-      <button id="btnVolverEditar" class="btn btn-outline-light btn-sm">
-        <i class="fas fa-arrow-left me-1"></i>Volver
-      </button>
-    </div>
-    <div class="card-body p-4">
-      <%- include('osteoform') %>
-    </div>
-  </div>
-</div>
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body text-center">
+                <i
+                  class="fas fa-users"
+                  style="font-size: 3rem; color: #2195a3"
+                ></i>
+                <h3 class="card-title mt-3">0</h3>
+                <p class="card-text text-muted">Pacientes Registrados</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body text-center">
+                <i
+                  class="fas fa-clipboard-check"
+                  style="font-size: 3rem; color: #4caf50"
+                ></i>
+                <h3 class="card-title mt-3">0</h3>
+                <p class="card-text text-muted">Diagnósticos Hoy</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="osteoform" style="display: none">
+        <%- include('osteoform') %>
+      </div>
 
+      <div id="buscarPacientes" class="container mt-4" style="display: none">
+        <h3>Pacientes</h3>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="sortable" data-field="nombre">Nombre</th>
+              <th class="sortable" data-field="edad">Edad</th>
+              <th class="sortable" data-field="sexo">Sexo</th>
+              <th class="sortable" data-field="primerRegistro">
+                Primer registro
+              </th>
+              <th class="sortable" data-field="ultimaActualizacion">
+                Última actualización
+              </th>
+              <th></th>
+              <!-- Columna vacía para botones -->
+            </tr>
+          </thead>
 
- </main>
+          <tbody id="pacientesTableBody">
+            <!-- Aquí se irán añadiendo los pacientes más adelante -->
+          </tbody>
+        </table>
+      </div>
+      <!-- MODAL/FORM EDITAR PACIENTE (dentro de buscarPacientes) -->
+      <div id="editarPacienteForm" class="mt-5" style="display: none">
+        <div class="card shadow-lg">
+          <div
+            class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+          >
+            <h4 class="mb-0">
+              <i class="fas fa-edit me-2"></i>Editar Paciente
+            </h4>
+            <button id="btnVolverEditar" class="btn btn-outline-light btn-sm">
+              <i class="fas fa-arrow-left me-1"></i>Volver
+            </button>
+          </div>
+          <div class="card-body p-4"><%- include('osteoform') %></div>
+        </div>
+      </div>
+    </main>
 
-    <footer class="text-muted small mt-auto py-3 text-center bg-light border-top">
-  2025 © Arturo Muñoz
-</footer>
-  <!-- Bootstrap JS + small script -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <footer
+      class="text-muted small mt-auto py-3 text-center bg-light border-top"
+    >
+      2025 © Arturo Muñoz
+    </footer>
+    <!-- Bootstrap JS + small script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="/javascripts/form.js"></script>
-<script src="/javascripts/decision.js"></script>
-<script src="/javascripts/navegacion.js"></script>
-<script src="/javascripts/pacientes.js"></script>
-<script src="/javascripts/editar.js"></script>
-<script src="/javascripts/dashboard.js"></script>
-<script src="/javascripts/main.js"></script>
-</body>
+    <script src="/javascripts/form.js"></script>
+    <script src="/javascripts/decision.js"></script>
+    <script src="/javascripts/navegacion.js"></script>
+    <script src="/javascripts/pacientes.js"></script>
+    <script src="/javascripts/editar.js"></script>
+    <script src="/javascripts/dashboard.js"></script>
+    <script src="/javascripts/main.js"></script>
+  </body>
 </html>

@@ -4,18 +4,18 @@ let pacientes = []; // esta variable se llena desde data.js
 
 let currentSort = {
   field: null,
-  direction: 1 // 1 para ascendente, -1 para descendente
-}
+  direction: 1, // 1 para ascendente, -1 para descendente
+};
 //cargar de api
 async function cargarPacientes() {
   try {
-    const res = await fetch('/api/pacientes');
-    if (!res.ok) throw new Error('Error en la API');
+    const res = await fetch("/api/pacientes");
+    if (!res.ok) throw new Error("Error en la API");
     pacientes = await res.json();
     updateTable();
-    if (typeof actualizarDashboard === 'function') actualizarDashboard();
-    } catch (error) {
-    console.error('Error al cargar pacientes desde la API:', error);
+    if (typeof actualizarDashboard === "function") actualizarDashboard();
+  } catch (error) {
+    console.error("Error al cargar pacientes desde la API:", error);
     pacientes = [];
   }
 }
@@ -37,17 +37,22 @@ function sortPacientes(field) {
     if (!valB) return 1;
 
     // comparar fechas
-    if (field.includes('Registro') || field.includes('Actualizacion')) {
+    if (field.includes("Registro") || field.includes("Actualizacion")) {
       return (new Date(valA) - new Date(valB)) * currentSort.direction;
     }
 
     //comparar numeros
-    if (typeof valA === 'number') {
+    if (typeof valA === "number") {
       return (valA - valB) * currentSort.direction;
     }
 
     //comparar texto
-    return valA.toString().localeCompare(valB.toString(), 'es', { sensitivity: 'base' }) * currentSort.direction;
+    return (
+      valA
+        .toString()
+        .localeCompare(valB.toString(), "es", { sensitivity: "base" }) *
+      currentSort.direction
+    );
   });
 
   updateTable();
@@ -55,56 +60,55 @@ function sortPacientes(field) {
 }
 
 // submit del formulario de nuevo paciente
-document.getElementById('osteoform')?.addEventListener('submit', async e => {
+document.getElementById("osteoform")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const nombre = document.getElementById('nombre');
-  const apellidos = document.getElementById('apellidos');
+  const nombre = document.getElementById("nombre");
+  const apellidos = document.getElementById("apellidos");
 
   if (!validarNombre(nombre.value)) {
-    nombre.classList.add('is-invalid');
+    nombre.classList.add("is-invalid");
     return;
   }
 
   if (!validarApellidos(apellidos.value)) {
-    apellidos.classList.add('is-invalid');
+    apellidos.classList.add("is-invalid");
     return;
   }
 
   const data = Object.fromEntries(new FormData(e.target));
-  data.nombre= `${apellidos.value.trim()}, ${nombre.value.trim()}`;
+  data.nombre = `${apellidos.value.trim()}, ${nombre.value.trim()}`;
   delete data.apellidos;
-  const now = new Date().toLocaleDateString('es-ES');
+  const now = new Date().toLocaleDateString("es-ES");
 
   //data.primerRegistro = now;
   //data.ultimaActualizacion = now;
 
-const res = await fetch('/api/pacientes', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(data)
-});
+  const res = await fetch("/api/pacientes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-if (!res.ok) {
-  const error = await res.json();
-  console.error('Error al crear paciente:', error);
-  alert('No se pudo guardar el paciente');
-  return;
-}
+  if (!res.ok) {
+    const error = await res.json();
+    console.error("Error al crear paciente:", error);
+    alert("No se pudo guardar el paciente");
+    return;
+  }
 
-e.target.reset();
-document.querySelector('a[href="#buscar"]')?.click();
-await cargarPacientes();
-
+  e.target.reset();
+  document.querySelector('a[href="#buscar"]')?.click();
+  await cargarPacientes();
 });
 
 // Actualizar tabla de pacientes
 function updateTable() {
-  const tbody = document.getElementById('pacientesTableBody');
-  tbody.innerHTML = '';
+  const tbody = document.getElementById("pacientesTableBody");
+  tbody.innerHTML = "";
 
   pacientes.forEach((p, i) => {
-    const tr = document.createElement('tr');
+    const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${p.nombre}</td>
       <td>${p.edad}</td>
@@ -123,51 +127,56 @@ function updateTable() {
 
 //flechas de ordenacion
 function updateSortIcons() {
-  document.querySelectorAll('.sortable'). forEach(th => {
+  document.querySelectorAll(".sortable").forEach((th) => {
     const field = th.dataset.field;
     //limpiar iconos
-    th.innerHTML = th.textContent.replace(/[\u25B2\u25BC]/g, '').trim();
+    th.innerHTML = th.textContent.replace(/[\u25B2\u25BC]/g, "").trim();
 
     if (field === currentSort.field) {
-      const arrow = currentSort.direction === 1 ? ' \u25B2' : ' \u25BC';
+      const arrow = currentSort.direction === 1 ? " \u25B2" : " \u25BC";
       th.innerHTML += arrow;
     }
   });
 }
 
-
 function formatearFecha(fecha) {
-  if (!fecha) return '';
+  if (!fecha) return "";
   const d = new Date(fecha);
-  return d.toLocaleDateString('es-ES');
+  return d.toLocaleDateString("es-ES");
 }
 
 // Manejo de botones en la tabla
-document.getElementById('pacientesTableBody')?.addEventListener('click', async (e) => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
-  
-  const id = btn.dataset.id;
-  if (!id) return;
-  
-  if (btn.textContent.includes('Eliminar')) {
-    if (confirm(`¿Eliminar "${pacientes.find(p => p._id === id)?.nombre || 'paciente'}"?`)) {
-      await fetch(`/api/pacientes/${id}`, { method: 'DELETE' });
-      await cargarPacientes();
-    }
-  } else if (btn.textContent.includes('Editar')) {
-    editPaciente(id);
-  } else if (btn.textContent.includes('Descargar')) {
-    descargarPaciente(id);
-  }
-});
+document
+  .getElementById("pacientesTableBody")
+  ?.addEventListener("click", async (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
 
-document.addEventListener('DOMContentLoaded', () => {
+    const id = btn.dataset.id;
+    if (!id) return;
+
+    if (btn.textContent.includes("Eliminar")) {
+      if (
+        confirm(
+          `¿Eliminar "${pacientes.find((p) => p._id === id)?.nombre || "paciente"}"?`,
+        )
+      ) {
+        await fetch(`/api/pacientes/${id}`, { method: "DELETE" });
+        await cargarPacientes();
+      }
+    } else if (btn.textContent.includes("Editar")) {
+      editPaciente(id);
+    } else if (btn.textContent.includes("Descargar")) {
+      descargarPaciente(id);
+    }
+  });
+
+document.addEventListener("DOMContentLoaded", () => {
   cargarPacientes();
 
-  document.querySelectorAll('.sortable').forEach(th => {
-    th.computedStyleMap.cursor= 'pointer';
-    th.addEventListener('click', () => {
+  document.querySelectorAll(".sortable").forEach((th) => {
+    th.computedStyleMap.cursor = "pointer";
+    th.addEventListener("click", () => {
       const field = th.dataset.field;
       sortPacientes(field);
     });
