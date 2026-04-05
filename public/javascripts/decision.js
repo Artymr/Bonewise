@@ -1,127 +1,197 @@
 // ===============================
-// DECISIÓN TERAPÉUTICA OSTEOPOROSIS
+// Lógica del tratamiento sugerido basada en datos del formulario
 // ===============================
 
-document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn-decision');
-    if (!btn) return;
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".btn-decision");
+  if (!btn) return;
 
-    const form = btn.closest('form');
-    if (!form) return;
+  const form = btn.closest("form");
+  if (!form) return;
 
-    const data = recogerDatosFormulario(form);
-    const resultado = decidirTratamiento(data);
-    mostrarResultado(resultado);
+  const data = recogerDatosFormulario(form);
+  const resultado = decidirTratamiento(data);
+  mostrarResultado(resultado, btn);
 });
 
 // -------------------------------
 // Recoger datos relevantes
 // -------------------------------
 function recogerDatosFormulario(form) {
-  const sexo = form.querySelector('#sexo')?.value;
-  const edad = Number(form.querySelector('#edad')?.value);
-  const fracturas = form.querySelectorAll('#fracturasList .alert').length;
-  const tLumbar = Number(form.querySelector('#t_lumbar')?.value);
-  const tCuello = Number(form.querySelector('#t_cuello')?.value);
-  const riesgoFRAX = Number(form.querySelector('#riesgo_frax')?.value);
-  const riesgoDMO = form.querySelector('#riesgo_dmo')?.value?.toLowerCase();
-  const corticoides = form.querySelector('#corticoides')?.value;
+  const sexo = form.querySelector("#sexo")?.value;
+  const edad = Number(form.querySelector("#edad")?.value);
+
+  const tLumbar = Number(form.querySelector("#t_lumbar")?.value);
+  const tCuello = Number(form.querySelector("#t_cuello")?.value);
+
+  const peorTScore = Math.min(tLumbar, tCuello);
+
+  const riesgoFRAX = Number(form.querySelector("#riesgo_frax")?.value);
+  const riesgoDMO = form.querySelector("#riesgo_dmo")?.value;
+  const riesgoTotal = form.querySelector("#riesgo_total")?.value;
+
+  const fracturasPrevias = form.querySelector("#fract_previa")?.value || "";
+
+  const corticoides = form.querySelector("#corticoides")?.value;
+  const calcio = Number(form.querySelector("#calcio")?.value);
+  const aclaramiento = Number(
+    form.querySelector("#aclaramiento_creatinina")?.value,
+  );
+
+  const enfAsociadas =
+    form.querySelector("#enfermedades_asociadas")?.value || "";
+
+  const bifosfonatos = form.querySelector("#bifosfonatos")?.value;
+  const denosumab = form.querySelector("#denosumab")?.value;
+  const anabolicos = form.querySelector("#anabolicos")?.value;
 
   return {
     sexo,
     edad,
-    fracturas,
     tLumbar,
     tCuello,
+    peorTScore,
     riesgoFRAX,
     riesgoDMO,
-    tratActual,
-    corticoides
+    riesgoTotal,
+    fracturasPrevias,
+    corticoides,
+    calcio,
+    aclaramiento,
+    enfAsociadas,
+    bifosfonatos,
+    denosumab,
+    anabolicos,
   };
 }
-
 
 // -------------------------------
 // LÓGICA DE DECISIÓN (core)
 // -------------------------------
 function decidirTratamiento(p) {
+  let recomendaciones = [];
 
-  // 0️⃣ SIN DATOS CLAVE
-  if (!p.sexo || !p.edad) {
-    return 'Faltan datos básicos para la toma de decisiones clínicas.';
+  // 1. Clasificación base
+  let riesgo = "bajo";
+
+  if (p.peorTScore <= -3.5) {
+    riesgo = "muy alto";
+  } else if (p.peorTScore <= -2.5) {
+    riesgo = "alto";
+  } else if (p.peorTScore <= -1) {
+    riesgo = "moderado";
   }
 
-  // 1️⃣ FRACTURA DE CADERA → TRATAMIENTO DIRECTO
-  if (p.fracturas > 0) {
-    return `
-Paciente con fractura osteoporótica previa.
-
-✔ Medidas universales: calcio + vitamina D  
-✔ Prevención de caídas  
-✔ Tratamiento farmacológico de primera línea:
-
-➡ Bifosfonato (oral o IV según tolerancia)
-
-⚠ Considerar denosumab o teriparatida si riesgo muy alto.
-    `;
+  // aumentar riesgo si hay fracturas o corticoides
+  if (p.fracturasPrevias && p.fracturasPrevias !== "no") {
+    if (riesgo === "bajo") riesgo = "moderado";
+    else if (riesgo === "moderado") riesgo = "alto";
+    else riesgo = "muy alto";
   }
 
-  // 2️⃣ MUY ALTO RIESGO
-  if (
-    p.fracturas >= 2 ||
-    p.riesgoDMO === 'muy alto'
-  ) {
-    return `
-Paciente con riesgo MUY ALTO de fractura.
-
-➡ Tratamiento recomendado:
-✔ Teriparatida (1-34 PTH) durante 24 meses  
-➡ Posteriormente bifosfonato o denosumab.
-    `;
+  if (p.corticoides === "si") {
+    if (riesgo === "moderado") riesgo = "alto";
+    else if (riesgo === "alto") riesgo = "muy alto";
   }
 
-  // 3️⃣ ALTO RIESGO
-  if (
-    p.riesgoFRAX >= 20 ||
-    p.tLumbar <= -2.5 ||
-    p.tCuello <= -2.5 ||
-    p.riesgoDMO === 'alto'
-  ) {
-    return `
-Paciente con ALTO riesgo de fractura.
+  // 2. base universal
+  recomendaciones.push("Valorar ingesta adecuada de calcio");
+  recomendaciones.push("Asegurar niveles adecuados de vitamina D");
+  recomendaciones.push("Ejercicio de fuerza y prevención de caídas");
 
-➡ Tratamiento recomendado:
-✔ Bifosfonato oral (alendronato / risedronato)
+  // 3. decisiones terapéuticas
 
-🔄 Reevaluar en 3–5 años con FRAX y DMO.
-    `;
+  if (riesgo === "bajo") {
+    recomendaciones.push(
+      "No se recomienda tratamiento farmacológico específico",
+    );
+  } else if (riesgo === "moderado") {
+    recomendaciones.push(
+      "Suplementación con calcio y vitamina D si ingesta insuficiente",
+    );
+  } else if (riesgo === "alto") {
+    if (p.aclaramiento < 35) {
+      recomendaciones.push("Evitar bifosfonatos por insuficiencia renal");
+      recomendaciones.push("Considerar Denosumab");
+    } else {
+      recomendaciones.push("Primera línea: Alendronato");
+      recomendaciones.push("Alternativas: Risedronato o Zoledronato");
+    }
+  } else if (riesgo === "muy alto") {
+    if (p.sexo === "Femenino" && !p.enfAsociadas.includes("cardiaca")) {
+      recomendaciones.push("Considerar Romosozumab durante 12 meses");
+    } else {
+      recomendaciones.push("Considerar Teriparatida hasta 24 meses");
+    }
+
+    recomendaciones.push(
+      "Tras tratamiento anabólico, continuar con antiresortivo",
+    );
   }
 
-  // 4️⃣ RIESGO MODERADO
-  if (p.riesgoFRAX >= 10 || p.riesgoDMO === 'moderado') {
-    return `
-Paciente con riesgo MODERADO.
+  // 4. advertencias por tratamientos previos
 
-✔ Medidas no farmacológicas
-✔ Calcio + Vitamina D
-🔄 Reevaluar FRAX + DMO periódicamente
-    `;
+  if (p.denosumab === "si") {
+    recomendaciones.push("No suspender Denosumab sin terapia alternativa");
   }
 
-  // 5️⃣ BAJO RIESGO
-  return `
-Paciente de BAJO riesgo de fractura.
+  if (p.anabolicos.includes("Teriparatida") && p.denosumab === "si") {
+    recomendaciones.push("Evitar cambio directo Denosumab → Teriparatida");
+  }
 
-❌ No se indica tratamiento farmacológico
-✔ Medidas higiénico-dietéticas
-✔ Prevención de caídas
-✔ Seguimiento clínico
-  `;
+  return {
+    riesgo,
+    recomendaciones,
+  };
 }
 
 // -------------------------------
 // Mostrar resultado
 // -------------------------------
-function mostrarResultado(texto) {
-  alert(`RESULTADO DE LA EVALUACIÓN\n\n${texto}`);
+function mostrarResultado(resultado, btn) {
+  // Navegar hasta el .d-flex exterior (el que tiene limpiar + botones derecha)
+  const innerFlex = btn.closest(".d-flex"); // div con ms-auto
+  const outerFlex = innerFlex.parentElement; // d-flex exterior
+  const limpiarBtn = outerFlex.querySelector('[type="reset"]');
+
+  const colores = {
+    bajo: { clase: "alert-success", icono: "✅" },
+    moderado: { clase: "alert-warning", icono: "⚠️" },
+    alto: { clase: "alert-danger", icono: "🔴" },
+    "muy alto": { clase: "alert-danger", icono: "🚨" },
+  };
+  const c = colores[resultado.riesgo] || colores["bajo"];
+
+  // Reutilizar si ya existe, si no crear
+  let contenedor = outerFlex.querySelector(".resultado-tratamiento");
+  if (!contenedor) {
+    contenedor = document.createElement("div");
+    contenedor.className = `alert ${c.clase} resultado-tratamiento mb-0`;
+    contenedor.style.cssText =
+      "flex:1; margin:0 1rem; position:relative; font-size:0.875rem;";
+    // Insertar justo después del botón limpiar, antes de los botones derecha
+    limpiarBtn.insertAdjacentElement("afterend", contenedor);
+  } else {
+    // Actualizar color si el riesgo cambió
+    contenedor.className = `alert ${c.clase} resultado-tratamiento mb-0`;
+  }
+
+  contenedor.innerHTML = `
+    <!-- Botón cerrar -->
+    <button type="button" class="btn-cerrar-resultado" style="
+      position:absolute; top:0.3rem; right:0.5rem;
+      background:none; border:none; font-size:1.1rem;
+      cursor:pointer; opacity:0.6; line-height:1;"
+      aria-label="Cerrar">&times;</button>
+
+    <strong>${c.icono} Riesgo: ${resultado.riesgo.toUpperCase()}</strong>
+    <ul class="mb-0 mt-1 ps-3">
+      ${resultado.recomendaciones.map((r) => `<li>${r}</li>`).join("")}
+    </ul>
+  `;
+
+  // Listener del botón cerrar
+  contenedor
+    .querySelector(".btn-cerrar-resultado")
+    .addEventListener("click", () => contenedor.remove());
 }
