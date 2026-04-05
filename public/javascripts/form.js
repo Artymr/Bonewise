@@ -123,12 +123,13 @@ function calcFraxMejorado() {
   // 2. Factores de riesgo (betas FRAX approx)
   const fracturas = getActiveField("fract_previa")?.value || "";
   if (fracturas && fracturas !== "no") logit += 1.0;
-  if (getCheckbox("fx_cadera_fam")) logit += 0.5;
-  if (getCheckbox("tabaquismo")) logit += 0.3;
-  if (getCheckbox("alcohol")) logit += 0.3;
-  if (getCheckbox("corticoides")) logit += 0.6;
-  if (getCheckbox("artritis")) logit += 0.7;
-  if (getCheckbox("osteo_sec")) logit += 0.5;
+  if (getActiveField("fx_cadera_fam")?.value === "si") logit += 0.5;
+  if (getActiveField("tabaquismo")?.value === "Fumador actual") logit += 0.36;
+  if (getActiveField("tabaquismo")?.value === "Exfumador") logit += 0.18;
+  if (getActiveField("alcohol")?.value === "si") logit += 0.34;
+  if (getActiveField("corticoides")?.value === "si") logit += 0.57;
+  if (getActiveField("artritis")?.value === "si") logit += 0.69;
+  if (getActiveField("osteo_sec")?.value === "si") logit += 0.46;
 
   // 3. IMC continuo (penaliza bajo)
   logit += Math.max(-0.1 * (25 - imc), 0); // + si IMC <25
@@ -138,7 +139,7 @@ function calcFraxMejorado() {
     logit += 0.45 * -tCuello; // ~doble riesgo por SD
   }
 
-  // 5. Probabilidad 10a (sin muerte, approx)
+  // 5. Probabilidad 10a
   const risk = 100 / (1 + Math.exp(-logit));
   const porcentaje = Math.min(risk.toFixed(1), 30.0); // Cap realista
 
