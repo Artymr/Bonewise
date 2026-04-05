@@ -175,6 +175,42 @@ function calcularRiesgoDMO() {
     riesgo = "Muy alto";
   }
   riesgoInput.value = riesgo;
+  calcularRiesgoTotal();
+}
+
+//calcular riesgo total
+function calcularRiesgoTotal() {
+  const niveles = ["Bajo", "Moderado", "Alto", "Muy alto"];
+  const riesgoDMO = getActiveField("riesgo_dmo")?.value;
+  const riesgoTotalInput = getActiveField("riesgo_total");
+
+  if (!riesgoTotalInput) return;
+
+  if (!riesgoDMO || !niveles.includes(riesgoDMO)) {
+    riesgoTotalInput.value = "";
+    return;
+  }
+
+  let nivel = niveles.indexOf(riesgoDMO);
+
+  //Condicion 1: al menos un "si" en fracturas previas
+  const fractPrevia = getActiveField("fract_previa")?.value || "";
+  const valoresFract = fractPrevia.split(",").map(v => v.trim().toLowerCase());
+  const tieneFractura = valoresFract.some(v => v && v !== "no");
+  if (tieneFractura) nivel++;
+
+  //Condicion 2: corticoides "si
+  if (getActiveField("corticoides")?.value === "si") nivel++;
+
+  //Condicion 3: fumador o exfumador Y menopausia < 45
+  const tabaco = getActiveField("tabaquismo")?.value || "";
+  const esFumador = tabaco === "Fumador Actual" || tabaco === "Exfumador";
+  const menopausia = parseFloat(getActiveField("menopausia")?.value);
+  if (esFumador && !isNaN(menopausia) && menopausia < 45) nivel++;
+
+  //Limitar a "Muy alto"
+  nivel = Math.min(nivel, niveles.length - 1);
+  riesgoTotalInput.value = niveles[nivel];
 }
 
 //logica de fracturas previas
@@ -208,6 +244,7 @@ function actualizarFracturas() {
     }
   });
   document.getElementById("fract_previa").value = seleccionadas.join(",");
+  calcularRiesgoTotal();
 }
 
 //logica de enfermedades asociadas
@@ -281,4 +318,6 @@ function recalcularCamposDependientes() {
 // Eventos (mismo que antes, añade #previa etc.)
 document.addEventListener("input", calcFraxMejorado);
 document.addEventListener("change", calcFraxMejorado);
+document.addEventListener("input", calcularRiesgoTotal);
+document.addEventListener("change", calcularRiesgoTotal);
 document.addEventListener("DOMContentLoaded", calcFraxMejorado);
