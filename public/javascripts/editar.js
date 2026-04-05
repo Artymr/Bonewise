@@ -49,7 +49,7 @@ function editPaciente(id) {
   tableContainer.style.display = "none";
   editarForm.style.display = "block";
 
-  const btnReset = editarForm.querySelector('button[type="reset"]');
+  const btnReset = editarForm.querySelector('#btnLimpiar');
   if (btnReset) btnReset.style.display = "none"; // Ocultar botón reset en modo edición
   populateFormCompletamente(patient);
   editarForm.scrollIntoView({ behavior: "smooth" });
@@ -188,7 +188,7 @@ document
 function cancelarEdicion() {
   editMode = false;
   bloquearMenu(false);
-  const btnReset = editarForm.querySelector('button[type="reset"]');
+  const btnReset = editarForm.querySelector('#btnLimpiar');
   if (btnReset) btnReset.style.display = ""; // Mostrar botón reset al salir de edición
   editarForm.style.display = "none";
   const tableContainer =
