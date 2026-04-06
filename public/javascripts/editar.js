@@ -41,6 +41,7 @@ function editPaciente(id) {
   editingId = id;
   editingPaciente = patient;
   bloquearMenu(true);
+  limpiarResultadoTratamiento(); // Limpiar resultado previo al entrar en edición
 
   // Ocultar tabla, mostrar form edición
   const tableContainer =

@@ -195,3 +195,12 @@ function mostrarResultado(resultado, btn) {
     .querySelector(".btn-cerrar-resultado")
     .addEventListener("click", () => contenedor.remove());
 }
+
+// ===============================
+// Limpiar resultado previo
+// ===============================
+function limpiarResultadoTratamiento(){
+  document
+    .querySelectorAll(".resultado-tratamiento")
+    .forEach(el => el.remove());
+}
