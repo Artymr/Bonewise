@@ -316,6 +316,23 @@ function recalcularCamposDependientes() {
   calcularRiesgoDMO();
 }
 
+//Cerrar tratamiendo sugerido si se modifican datos
+document.addEventListener("input", function(e) {
+  const form = e.target.closest("form");
+  if (!form) return;
+  cerrarTratamientoSiExiste();
+});
+document.addEventListener("change", function(e) {
+  const form = e.target.closest("form");
+  if (!form) return;
+  cerrarTratamientoSiExiste();
+});
+function cerrarTratamientoSiExiste() {
+  document
+    .querySelectorAll(".resultado-tratamiento")
+    .forEach((res) => res.remove());
+}
+
 // Eventos (mismo que antes, añade #previa etc.)
 document.addEventListener("input", calcFraxMejorado);
 document.addEventListener("change", calcFraxMejorado);

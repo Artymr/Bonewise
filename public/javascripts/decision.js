@@ -73,13 +73,14 @@ function decidirTratamiento(p) {
 
   // 1. Clasificación base
   let riesgo = "bajo";
-
-  if (p.peorTScore <= -3.5) {
-    riesgo = "muy alto";
-  } else if (p.peorTScore <= -2.5) {
-    riesgo = "alto";
-  } else if (p.peorTScore <= -1) {
+  if (p.peorTScore >= -1) {
+    riesgo = "bajo";
+  } else if (p.peorTScore >= -2.5) {
     riesgo = "moderado";
+  } else if (p.peorTScore >= -3.5) {
+    riesgo = "alto";
+  } else {
+    riesgo = "muy alto";
   }
 
   // aumentar riesgo si hay fracturas o corticoides
@@ -155,10 +156,10 @@ function mostrarResultado(resultado, btn) {
   const limpiarBtn = outerFlex.querySelector('[type="reset"]');
 
   const colores = {
-    bajo: { clase: "alert-success", icono: "✅" },
-    moderado: { clase: "alert-warning", icono: "⚠️" },
-    alto: { clase: "alert-danger", icono: "🔴" },
-    "muy alto": { clase: "alert-danger", icono: "🚨" },
+    bajo: { clase: "alert-success" },
+    moderado: { clase: "alert-warning" },
+    alto: { clase: "alert-danger" },
+    "muy alto": { clase: "alert-danger" },
   };
   const c = colores[resultado.riesgo] || colores["bajo"];
 
@@ -184,7 +185,7 @@ function mostrarResultado(resultado, btn) {
       cursor:pointer; opacity:0.6; line-height:1;"
       aria-label="Cerrar">&times;</button>
 
-    <strong>${c.icono} Riesgo: ${resultado.riesgo.toUpperCase()}</strong>
+    <strong>Riesgo: ${resultado.riesgo.toUpperCase()}</strong>
     <ul class="mb-0 mt-1 ps-3">
       ${resultado.recomendaciones.map((r) => `<li>${r}</li>`).join("")}
     </ul>
@@ -199,8 +200,8 @@ function mostrarResultado(resultado, btn) {
 // ===============================
 // Limpiar resultado previo
 // ===============================
-function limpiarResultadoTratamiento(){
+function limpiarResultadoTratamiento() {
   document
     .querySelectorAll(".resultado-tratamiento")
-    .forEach(el => el.remove());
+    .forEach((el) => el.remove());
 }
