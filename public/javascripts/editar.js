@@ -77,7 +77,7 @@ function resetCamposDinamicos() {
     });
 }
 
-// Función para rellenar el formulario de edición completamente (lo que hace que funcione el editar)
+// Función para rellenar el formulario de edición completamente (lo que hace que funcione el editar)=======================
 function populateFormCompletamente(patientData) {
   resetCamposDinamicos();
   if (patientData.nombre && patientData.nombre.includes(",")) {
@@ -178,6 +178,7 @@ function populateFormCompletamente(patientData) {
   });
 
   recalcularCamposDependientes();
+  actualizarCampoMenopausia();
 }
 
 // Botón VOLVER

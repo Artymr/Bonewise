@@ -333,9 +333,29 @@ function cerrarTratamientoSiExiste() {
     .forEach((res) => res.remove());
 }
 
+// Control menopausia por sexo
+function actualizarCampoMenopausia() {
+  const sexo = getActiveField("sexo")?.value;
+  const menopausiaField = getActiveField("menopausia");
+  if (!menopausiaField) return;
+  if (sexo === "Femenino") {
+    menopausiaField.disabled = false;
+    menopausia.closest(".col-md-2").style.opacity = "1";
+  } else {
+    menopausiaField.disabled = true;
+    menopausiaField.value = "";
+    menopausia.closest(".col-md-2").style.opacity = "0.5";
+  }
+}
+
+document.addEventListener("change", (e) => {
+  if (e.target.id === "sexo") actualizarCampoMenopausia();
+});
+
 // Eventos (mismo que antes, añade #previa etc.)
 document.addEventListener("input", calcFraxMejorado);
 document.addEventListener("change", calcFraxMejorado);
 document.addEventListener("input", calcularRiesgoTotal);
 document.addEventListener("change", calcularRiesgoTotal);
 document.addEventListener("DOMContentLoaded", calcFraxMejorado);
+document.addEventListener("DOMContentLoaded", actualizarCampoMenopausia);
