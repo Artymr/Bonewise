@@ -214,6 +214,13 @@ function calcularRiesgoTotal() {
   riesgoTotalInput.value = niveles[nivel];
 }
 
+//Helper
+function getActiveForm() {
+  const ef = document.getElementById("editarPacienteForm");
+  if (ef && ef.style.display === "block") return ef;
+  return document.getElementById("osteoform");
+}
+
 //logica de fracturas previas
 const fractChecks = document.querySelectorAll(".fractura-check");
 const fractNo = document.getElementById("fract_no");
@@ -233,18 +240,20 @@ fractChecks.forEach((chk) => {
 });
 
 function actualizarFracturas() {
+  const form = getActiveForm();
+  if (!form) return;
   const seleccionadas = [];
-  document.querySelectorAll(".fractura-check").forEach((chk) => {
+  form.querySelectorAll(".fractura-check").forEach((chk) => {
     if (chk.checked) {
       if (chk.value === "otro") {
-        const texto = document.getElementById("fract_otro_text").value.trim();
+        const texto = form.querySelector("#fract_otro_text")?.value.trim();
         seleccionadas.push(texto ? `Otro: ${texto}` : "Otro");
       } else {
         seleccionadas.push(chk.value);
       }
     }
   });
-  document.getElementById("fract_previa").value = seleccionadas.join(",");
+  form.querySelector("#fract_previa").value = seleccionadas.join(",");
   calcularRiesgoTotal();
 }
 
@@ -266,19 +275,20 @@ enfChecks.forEach((chk) => {
 });
 
 function actualizarEnfermedades() {
+  const form = getActiveForm();
+  if (!form) return;
   const seleccionadas = [];
-  document.querySelectorAll(".enf_asoc-check").forEach((chk) => {
+  form.querySelectorAll(".enf_asoc-check").forEach((chk) => {
     if (chk.checked) {
       if (chk.value === "otro") {
-        const texto = document.getElementById("enf_otro_text").value.trim();
+        const texto = form.querySelector("#enf_otro_text")?.value.trim();
         seleccionadas.push(texto ? `Otro: ${texto}` : "Otro");
       } else {
         seleccionadas.push(chk.value);
       }
     }
   });
-  document.getElementById("enfermedades_asociadas").value =
-    seleccionadas.join(",");
+  form.querySelector("#enfermedades_asociadas").value = seleccionadas.join(",");
 }
 
 // Mostrar campos de texto para "otro" en fracturas y enfermedades
@@ -340,16 +350,30 @@ function actualizarCampoMenopausia() {
   if (!menopausiaField) return;
   if (sexo === "Femenino") {
     menopausiaField.disabled = false;
-    menopausia.closest(".col-md-2").style.opacity = "1";
+    menopausiaField.closest(".col-md-2").style.opacity = "1";
   } else {
     menopausiaField.disabled = true;
     menopausiaField.value = "";
-    menopausia.closest(".col-md-2").style.opacity = "0.5";
+    menopausiaField.closest(".col-md-2").style.opacity = "0.5";
   }
 }
 
 document.addEventListener("change", (e) => {
   if (e.target.id === "sexo") actualizarCampoMenopausia();
+});
+
+//Reset de formulario: limpiar ventana y recalcular sliders
+document.getElementById("osteoform")?.addEventListener("reset", () => {
+  setTimeout(() => {
+    limpiarResultadoTratamiento();
+    document.querySelectorAll("#osteoform .t-score").forEach((s) => {
+      updateTScoreText(s);
+    });
+    actualizarCampoMenopausia();
+    calcFraxMejorado();
+    calcularRiesgoDMO();
+    calcularRiesgoTotal();
+  }, 0);
 });
 
 // Eventos (mismo que antes, añade #previa etc.)

@@ -38,8 +38,8 @@ function recogerDatosFormulario(form) {
     form.querySelector("#aclaramiento_creatinina")?.value,
   );
 
-  const enfAsociadas =
-    form.querySelector("#enfermedades_asociadas")?.value || "";
+  const enfAsociadas = form.querySelector("#enfermedades_asociadas")?.value || "";
+  const oncologicas = form.querySelector("#oncologicas")?.value || "";
 
   const bifosfonatos = form.querySelector("#bifosfonatos")?.value;
   const denosumab = form.querySelector("#denosumab")?.value;
@@ -62,6 +62,8 @@ function recogerDatosFormulario(form) {
     bifosfonatos,
     denosumab,
     anabolicos,
+    enfAsociadas,
+    oncologicas
   };
 }
 
@@ -138,6 +140,15 @@ function decidirTratamiento(p) {
 
   if (p.anabolicos.includes("Teriparatida") && p.denosumab === "si") {
     recomendaciones.push("Evitar cambio directo Denosumab → Teriparatida");
+  }
+
+  //5. BANDERAS ROJAS
+  if (p.enfAsociadas.includes("oncologicas") || p.oncologicas === "si") {
+    recomendaciones.push("CONTRAINDICADO: No usar Teriparatida en pacientes con antecedentes oncológicos");
+  }
+
+  if (p.enfAsociadas.includes("cardiaca")) {
+    recomendaciones.push("CONTRAINDICADO: No usar Romosozumab en pacientes con enfermedad cardíaca");
   }
 
   return {
