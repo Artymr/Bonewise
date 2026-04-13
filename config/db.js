@@ -1,13 +1,9 @@
-const mongoose = require('mongoose');
+const Datastore = require('@seald-io/nedb');
+const path = require('path');
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB conectado correctamente');
-  } catch (error) {
-    console.error('Error al conectar MongoDB:', error.message);
-    process.exit(1);
-  }
-};
+const db = new Datastore({
+  filename: path.join(__dirname, '..', 'datos', 'pacientes.db'),
+  autoload: true
+});
 
-module.exports = connectDB;
+module.exports = db;
