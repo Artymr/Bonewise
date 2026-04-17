@@ -23,7 +23,7 @@
   "build": {
     "appId": "com.bonewise.app",
     "productName": "BoneWise",
-    "artifactName": "BoneWise.exe",
+    "artifactName": "BoneWise-Installer.exe",
     "win": {
       "target": "nsis",
       "icon": "build/favicon.ico"
