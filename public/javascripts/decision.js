@@ -45,6 +45,8 @@ function recogerDatosFormulario(form) {
   const denosumab = form.querySelector("#denosumab")?.value;
   const anabolicos = form.querySelector("#anabolicos")?.value;
 
+  const riesgoTotalCalculado = form.querySelector("#riesgo_total")?.value.toLowerCase();
+
   return {
     sexo,
     edad,
@@ -63,7 +65,9 @@ function recogerDatosFormulario(form) {
     denosumab,
     anabolicos,
     enfAsociadas,
-    oncologicas
+    oncologicas,
+    riesgoTotalCalculado,
+    sexo,
   };
 }
 
@@ -74,28 +78,7 @@ function decidirTratamiento(p) {
   let recomendaciones = [];
 
   // 1. Clasificación base
-  let riesgo = "bajo";
-  if (p.peorTScore >= -1) {
-    riesgo = "bajo";
-  } else if (p.peorTScore >= -2.5) {
-    riesgo = "moderado";
-  } else if (p.peorTScore >= -3.5) {
-    riesgo = "alto";
-  } else {
-    riesgo = "muy alto";
-  }
-
-  // aumentar riesgo si hay fracturas o corticoides
-  if (p.fracturasPrevias && p.fracturasPrevias !== "no") {
-    if (riesgo === "bajo") riesgo = "moderado";
-    else if (riesgo === "moderado") riesgo = "alto";
-    else riesgo = "muy alto";
-  }
-
-  if (p.corticoides === "si") {
-    if (riesgo === "moderado") riesgo = "alto";
-    else if (riesgo === "alto") riesgo = "muy alto";
-  }
+  let riesgo = p.riesgoTotalCalculado || "bajo";
 
   // 2. base universal
   recomendaciones.push("Valorar ingesta adecuada de calcio");
