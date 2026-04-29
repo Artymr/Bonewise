@@ -3,7 +3,10 @@
 
 Aplicación de escritorio orientada a la gestión de pacientes, que permite registrar, editar y almacenar información clínica de forma estructurada. 
 A partir de los datos introducidos, la aplicación calcula automáticamente métricas relevantes y ofrece sugerencias de tratamiento basadas en la información del paciente.
-Diseñada para su uso en entornos de escritorio, con instalador disponible para Windows.
+
+Diseñada para su uso en entornos de escritorio, con instalador disponible para Windows
+
+(La instalación mediante el instalador incluye 4 pacientes de ejemplo que actúan como plantilla, permitiendo ver cómo se mostrarían los datos en la aplicación y pudiendo ser editados o eliminados posteriormente.)
 
 ---
 
@@ -14,7 +17,7 @@ Diseñada para su uso en entornos de escritorio, con instalador disponible para 
 
 ---
 
-## Guía de uso
+## Cómo iniciarlo
 ### Al usar como usuario:
 - Seguir los pasos de instalación y abrir el acceso directo que se habrá generado en el escritorio
 
