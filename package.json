@@ -1,6 +1,6 @@
 {
   "name": "bonewise",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "private": true,
   "main": "main.js",
   "scripts": {
@@ -23,10 +23,10 @@
   "build": {
     "appId": "com.bonewise.app",
     "productName": "BoneWise",
-    "artifactName": "BoneWise-Installer.exe",
     "win": {
       "target": "nsis",
-      "icon": "build/favicon.ico"
+      "icon": "build/favicon.ico",
+      "artifactName": "BoneWise-Installer.exe"
     },
     "nsis": {
       "oneClick": false,
@@ -34,7 +34,8 @@
     },
     "linux": {
       "target": "AppImage",
-      "icon": "build/favicon.png"
+      "icon": "build/favicon.png",
+      "artifactName": "BoneWise-Installer.AppImage"
     },
     "publish":{
       "provider": "github",
