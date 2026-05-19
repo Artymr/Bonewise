@@ -35,7 +35,7 @@
     "linux": {
       "target": "AppImage",
       "icon": "build/favicon.png",
-      "artifactName": "BoneWise-Installer.AppImage"
+      "artifactName": "BoneWise.AppImage"
     },
     "publish":{
       "provider": "github",
