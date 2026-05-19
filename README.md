@@ -4,16 +4,28 @@
 Aplicación de escritorio orientada a la gestión de pacientes, que permite registrar, editar y almacenar información clínica de forma estructurada. 
 A partir de los datos introducidos, la aplicación calcula automáticamente métricas relevantes y ofrece sugerencias de tratamiento basadas en la información del paciente.
 
-Diseñada para su uso en entornos de escritorio, con instalador disponible para Windows
+Diseñada para su uso en entornos de escritorio, con instalador disponible para Windows y Linux
 
-(La instalación mediante el instalador incluye 4 pacientes de ejemplo que actúan como plantilla, permitiendo ver cómo se mostrarían los datos en la aplicación y pudiendo ser editados o eliminados posteriormente.)
+(La instalación incluye 4 pacientes de ejemplo que actúan como plantilla, permitiendo ver cómo se mostrarían los datos en la aplicación y pudiendo ser editados o eliminados posteriormente.)
 
 ---
 
 ## Requisitos
-- Requerirá tener instalado node.js en el ordenador.Puedes descargarlo desde: https://nodejs.org/es/download
-- Para la instalación se requiere de un ordenador windows, pues el instalador es un .exe
-- En caso de no usar una máquina windows se necesitará clonar el repositorio y usarlo desde terminal
+### Usando el instalador (recomendado:
+- Windows o Linux
+- No requiere nada adicional
+
+### Ejecutando desde terminal necesitará tener instalado:
+- Node.js v18 o superior https://nodejs.org/es/download
+- Git https://git-scm.com/install/windows
+- Una vez instalados clonar el repositorio y ejecutarlo siguiendo los pasos:
+
+```bash
+git clone https://github.com/Artymr/Bonewise.git
+cd Bonewise
+npm install
+npm run electron
+```
 
 ---
 
