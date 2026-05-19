@@ -155,12 +155,10 @@ document
     const id = btn.dataset.id;
     if (!id) return;
 
-    if (btn.textContent.includes("Eliminar")) {
-      if (
-        confirm(
-          `¿Eliminar "${pacientes.find((p) => p._id === id)?.nombre || "paciente"}"?`,
-        )
-      ) {
+if (btn.textContent.includes("Eliminar")) {
+      const nombre = pacientes.find((p) => p._id === id)?.nombre || "paciente";
+      const confirmado = await confirmarEliminar(nombre);
+      if (confirmado) {
         await fetch(`/api/pacientes/${id}`, { method: "DELETE" });
         await cargarPacientes();
       }
@@ -170,6 +168,54 @@ document
       descargarPaciente(id);
     }
   });
+//modal para no romper al borrar
+function confirmarEliminar(nombre) {
+  return new Promise((resolve) => {
+    // Crear modal si no existe
+    let modal = document.getElementById("modalConfirmarEliminar");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "modalConfirmarEliminar";
+      modal.className = "modal fade";
+      modal.tabIndex = -1;
+      modal.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirmar eliminación</h5>
+            </div>
+            <div class="modal-body" id="modalConfirmarTexto"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="btnCancelarEliminar">Cancelar</button>
+              <button type="button" class="btn btn-danger" id="btnAceptarEliminar">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    document.getElementById("modalConfirmarTexto").textContent = `¿Eliminar "${nombre}"?`;
+
+    const bsModal = new bootstrap.Modal(modal);
+
+    const btnAceptar = document.getElementById("btnAceptarEliminar");
+    const btnCancelar = document.getElementById("btnCancelarEliminar");
+
+    // Limpiar listeners anteriores
+    const nuevoAceptar = btnAceptar.cloneNode(true);
+    const nuevoCancelar = btnCancelar.cloneNode(true);
+    btnAceptar.replaceWith(nuevoAceptar);
+    btnCancelar.replaceWith(nuevoCancelar);
+
+    nuevoAceptar.addEventListener("click", () => { bsModal.hide(); resolve(true); });
+    nuevoCancelar.addEventListener("click", () => { bsModal.hide(); resolve(false); });
+    modal.addEventListener("hidden.bs.modal", () => resolve(false), { once: true });
+
+    bsModal.show();
+  });
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
   cargarPacientes();
