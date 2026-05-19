@@ -1,6 +1,6 @@
 {
   "name": "bonewise",
-  "version": "0.0.0",
+  "version": "6.2.0",
   "private": true,
   "main": "main.js",
   "scripts": {
@@ -31,6 +31,10 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/favicon.png"
     },
     "publish":{
       "provider": "github",
