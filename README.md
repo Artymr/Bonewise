@@ -1,5 +1,5 @@
 # BoneWise
-# [Descargar BoneWise (Windows)](https://github.com/Artymr/Bonewise/releases/latest)
+# [Descargar BoneWise](https://github.com/Artymr/Bonewise/releases/latest)
 
 Aplicación de escritorio orientada a la gestión de pacientes, que permite registrar, editar y almacenar información clínica de forma estructurada. 
 A partir de los datos introducidos, la aplicación calcula automáticamente métricas relevantes y ofrece sugerencias de tratamiento basadas en la información del paciente.
